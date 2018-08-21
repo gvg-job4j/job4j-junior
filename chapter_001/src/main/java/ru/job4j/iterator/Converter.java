@@ -21,73 +21,53 @@ public class Converter {
             Iterator<Iterator<Integer>> parentIterator = it;
 
             /**
-             * Метод проверяет наличие следующего элемента.
+             * Метод проверяет наличие следующего элемента итератора.
              * @return Результат проверки.
              */
             @Override
             public boolean hasNext() {
-                boolean hasNext = false;
-                if (iterator == null) {
-                    hasNext = checkParentHasNext();
-                } else {
-                    if (iterator.hasNext()) {
-                        hasNext = true;
-                    } else {
-                        hasNext = checkParentHasNext();
-                    }
-                }
-                return hasNext;
+                return checkIteratorHasNext();
             }
 
             /**
-             * Метод возвращает следующий элемент.
+             * Метод возвращает следующий элемент итератора.
              * @return Элемент итератора.
              */
             @Override
             public Integer next() {
-                int number = 0;
-                if (iterator == null) {
-                    number = checkParentNext();
-                } else {
-                    if (iterator.hasNext()) {
-                        number = iterator.next();
-                    } else {
-                        number = checkParentNext();
-                    }
-                }
-                return number;
+                return checkIteratorNext();
             }
 
             /**
-             * Метод проверяет наличие следующего элемента у родительского итератора.
+             * Метод проверяет наличие следующего элемента итератора.
              * @return Результат проверки.
              */
-            private boolean checkParentHasNext() {
+            private boolean checkIteratorHasNext() {
                 boolean hasNext = false;
-                if (parentIterator.hasNext()) {
+                if (iterator != null && iterator.hasNext()) {
+                    hasNext = true;
+                } else if (parentIterator.hasNext()) {
                     iterator = parentIterator.next();
-                    if (iterator.hasNext()) {
-                        hasNext = true;
-                    }
+                    hasNext = iterator.hasNext();
                 }
                 return hasNext;
             }
 
             /**
-             * Метод получает данные из следующего итератора.
+             * Метод возвращает следующий элемент итератора.
              * @return Элемент итератора.
              */
-            private int checkParentNext() {
+            private int checkIteratorNext() {
                 int number = 0;
-                if (parentIterator.hasNext()) {
-                    iterator = parentIterator.next();
-                    if (iterator.hasNext()) {
-                        number = iterator.next();
+                if (iterator != null && iterator.hasNext()) {
+                    number = iterator.next();
+                } else {
+                    if (parentIterator.hasNext()) {
+                        iterator = parentIterator.next();
+                        number = checkIteratorNext();
                     } else {
                         throw new NoSuchElementException();
                     }
-                } else {
-                    throw new NoSuchElementException();
                 }
                 return number;
             }
