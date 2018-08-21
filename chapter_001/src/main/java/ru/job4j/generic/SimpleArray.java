@@ -1,7 +1,7 @@
 package ru.job4j.generic;
 
-import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * @author Valeriy Gyrievskikh
@@ -29,9 +29,9 @@ public class SimpleArray<T> implements Iterable<T> {
      * @param length Размер массива.
      */
     public SimpleArray(int length) {
-        this.array = (T[]) new Object[length];
-        this.size = length;
-        this.count = 0;
+        array = (T[]) new Object[length];
+        size = length;
+        count = 0;
     }
 
     /**
@@ -42,7 +42,7 @@ public class SimpleArray<T> implements Iterable<T> {
     public void add(T model) {
         if (count < size) {
             setValue(count, model);
-            this.count++;
+            count++;
         } else {
             throw new IndexOutOfBoundsException();
         }
@@ -57,8 +57,8 @@ public class SimpleArray<T> implements Iterable<T> {
     public void set(int index, T model) {
         if (index < size && index >= 0) {
             setValue(index, model);
-            if (this.count == index) {
-                this.count++;
+            if (count == index) {
+                count++;
             }
         } else {
             throw new IndexOutOfBoundsException();
@@ -66,18 +66,18 @@ public class SimpleArray<T> implements Iterable<T> {
     }
 
     /**
-     * Метод удаляет объект в указанной ячейке и свигает следующие объекты на одну позицию к началу массива.
+     * Метод удаляет объект в указанной ячейке и сдвигает следующие объекты на одну позицию к началу массива.
      *
-     * @param index Иднекс ячейки, в которой нужно удалить объект.
+     * @param index Индекс ячейки, в которой нужно удалить объект.
      */
     public void delete(int index) {
         if (index < size && index >= 0) {
             try {
                 if (size > index + 1) {
-                    System.arraycopy(this.array, index + 1, this.array, index, size - (index + 1));
+                    System.arraycopy(array, index + 1, array, index, size - (index + 1));
                 }
                 count--;
-                this.array[size - 1] = null;
+                array[size - 1] = null;
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -95,7 +95,7 @@ public class SimpleArray<T> implements Iterable<T> {
     public T get(int index) {
         T element = null;
         if (index < size && index >= 0) {
-            element = this.array[index];
+            element = array[index];
         } else {
             throw new IndexOutOfBoundsException();
         }
@@ -103,14 +103,14 @@ public class SimpleArray<T> implements Iterable<T> {
     }
 
     /**
-     * Метод устанавливает объект в ячейку с у казанным индексом.
+     * Метод устанавливает объект в ячейку с указанным индексом.
      *
      * @param index Индекс ячейки.
      * @param model Устанавливаемый объект.
      */
     private void setValue(int index, T model) {
         try {
-            this.array[index] = model;
+            array[index] = model;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -123,6 +123,32 @@ public class SimpleArray<T> implements Iterable<T> {
      */
     @Override
     public Iterator<T> iterator() {
-        return Arrays.asList(array).iterator();
+        return new Iterator<T>() {
+            int currentPosition = 0;
+
+            /**
+             * Метод проверяет наличие следщующего элемента коллекции.
+             * @return Результат проверки.
+             */
+            @Override
+            public boolean hasNext() {
+                return currentPosition < size;
+            }
+
+            /**
+             * Метод возвращает следщующий элемент коллекции.
+             * @return Элемент.
+             */
+            @Override
+            public T next() {
+                T element = null;
+                if (currentPosition < size) {
+                    element = array[currentPosition++];
+                } else {
+                    throw new NoSuchElementException();
+                }
+                return element;
+            }
+        };
     }
 }

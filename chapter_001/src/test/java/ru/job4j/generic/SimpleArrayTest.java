@@ -3,6 +3,7 @@ package ru.job4j.generic;
 import org.junit.Test;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
@@ -100,5 +101,24 @@ public class SimpleArrayTest {
         String result = iterator.next();
         String expect = array.get(0);
         assertThat(result, is(expect));
+        result = iterator.next();
+        expect = array.get(1);
+        assertThat(result, is(expect));
+    }
+
+    @Test
+    public void whenDontHaveNextElement() {
+        SimpleArray<String> array = new SimpleArray<>(1);
+        array.add("text1");
+        Iterator<String> iterator = array.iterator();
+        assertThat(iterator.hasNext(), is(true));
+        iterator.next();
+        assertThat(iterator.hasNext(), is(false));
+        try {
+            iterator.next();
+            fail("Expected NoSuchElementException");
+        } catch (NoSuchElementException thrown) {
+            assertNotEquals("", thrown.getMessage());
+        }
     }
 }
