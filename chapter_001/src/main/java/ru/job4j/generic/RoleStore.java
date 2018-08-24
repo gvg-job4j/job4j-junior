@@ -5,7 +5,7 @@ package ru.job4j.generic;
  * Хранилище для объекта Role.
  * @since 15.08.2018
  */
-public class RoleStore<Role> extends AbstractStore {
+public class RoleStore<Role extends Base> extends AbstractStore<Role> {
     /**
      * Хранилище объектов.
      */
@@ -18,25 +18,6 @@ public class RoleStore<Role> extends AbstractStore {
      */
     public RoleStore(int size) {
         super(size);
-        this.store = super.getStore();
-    }
-
-    /**
-     * Метод добавляет объект в хранилище.
-     *
-     * @param element Добавляемый элемент.
-     */
-    public void add(Role element) {
-        store.add(element);
-    }
-
-    /**
-     * Метод добавляет объект в хранилище в указанную ячейку.
-     *
-     * @param index Индекс ячейки.
-     * @param model Добавляемый объект.
-     */
-    public void set(int index, Role model) {
-        store.set(index, model);
+        this.store = new SimpleArray<>(size);
     }
 }
