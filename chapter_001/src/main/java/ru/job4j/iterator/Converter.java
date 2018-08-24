@@ -26,7 +26,15 @@ public class Converter {
              */
             @Override
             public boolean hasNext() {
-                return checkIteratorHasNext();
+                if (iterator == null || !iterator.hasNext()) {
+                    while (it.hasNext()) {
+                        iterator = it.next();
+                        if (iterator.hasNext()) {
+                            break;
+                        }
+                    }
+                }
+                return iterator.hasNext();
             }
 
             /**
@@ -35,41 +43,10 @@ public class Converter {
              */
             @Override
             public Integer next() {
-                return checkIteratorNext();
-            }
-
-            /**
-             * Метод проверяет наличие следующего элемента итератора.
-             * @return Результат проверки.
-             */
-            private boolean checkIteratorHasNext() {
-                boolean hasNext = false;
-                if (iterator != null && iterator.hasNext()) {
-                    hasNext = true;
-                } else if (parentIterator.hasNext()) {
-                    iterator = parentIterator.next();
-                    hasNext = iterator.hasNext();
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
                 }
-                return hasNext;
-            }
-
-            /**
-             * Метод возвращает следующий элемент итератора.
-             * @return Элемент итератора.
-             */
-            private int checkIteratorNext() {
-                int number = 0;
-                if (iterator != null && iterator.hasNext()) {
-                    number = iterator.next();
-                } else {
-                    if (parentIterator.hasNext()) {
-                        iterator = parentIterator.next();
-                        number = checkIteratorNext();
-                    } else {
-                        throw new NoSuchElementException();
-                    }
-                }
-                return number;
+                return iterator.next();
             }
         };
     }
