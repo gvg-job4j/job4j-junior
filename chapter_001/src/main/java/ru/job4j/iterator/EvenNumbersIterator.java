@@ -20,6 +20,7 @@ public class EvenNumbersIterator implements Iterator<Integer> {
 
     /**
      * Конструктор класса.
+     *
      * @param array
      */
     public EvenNumbersIterator(int[] array) {
@@ -29,6 +30,7 @@ public class EvenNumbersIterator implements Iterator<Integer> {
 
     /**
      * Метод проверяет наличие следующего четного числа в массиве.
+     *
      * @return Результат проверки.
      */
     @Override
@@ -48,6 +50,7 @@ public class EvenNumbersIterator implements Iterator<Integer> {
 
     /**
      * Метод возвращает следующий элемент массива, содержащий четное число.
+     *
      * @return Элемент массива.
      */
     @Override
