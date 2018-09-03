@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class LinkedListContainerTest {
 
     @Test
-    public void whenAddOneElementAndGetFirstThenEqualThisElement(){
+    public void whenAddOneElementAndGetFirstThenEqualThisElement() {
         LinkedListContainer<String> cont = new LinkedListContainer<>();
         String first = "1";
         cont.add(first);
@@ -24,7 +24,7 @@ public class LinkedListContainerTest {
     }
 
     @Test
-    public void whenAddOneElementAndTakeNextThenEqualThisElement(){
+    public void whenAddOneElementAndTakeNextThenEqualThisElement() {
         LinkedListContainer<String> cont = new LinkedListContainer<>();
         String first = "1";
         cont.add(first);
@@ -34,7 +34,7 @@ public class LinkedListContainerTest {
     }
 
     @Test
-    public void whenAddOneElementAndTakeTwoNextThenException(){
+    public void whenAddOneElementAndTakeTwoNextThenException() {
         LinkedListContainer<String> cont = new LinkedListContainer<>();
         String first = "1";
         cont.add(first);
@@ -49,7 +49,7 @@ public class LinkedListContainerTest {
     }
 
     @Test
-    public void whenGetIteratorAddElementTryNextThenException(){
+    public void whenGetIteratorAddElementTryNextThenException() {
         LinkedListContainer<String> cont = new LinkedListContainer<>();
         String first = "1";
         cont.add(first);
