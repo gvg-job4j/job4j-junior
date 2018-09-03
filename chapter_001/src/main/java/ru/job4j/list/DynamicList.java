@@ -98,12 +98,8 @@ public class DynamicList<E> implements Iterable<E> {
              */
             @Override
             public E next() {
-                if (currentCount == modCount) {
-                    if (hasNext()) {
-                        return array[current++];
-                    } else {
-                        throw new NoSuchElementException();
-                    }
+                if (currentCount == modCount && hasNext()) {
+                    return array[current++];
                 } else {
                     throw new ConcurrentModificationException();
                 }
