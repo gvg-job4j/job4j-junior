@@ -21,7 +21,7 @@ public class EvenNumbersIterator implements Iterator<Integer> {
     /**
      * Конструктор класса.
      *
-     * @param array
+     * @param array Обрабатываемый массив.
      */
     public EvenNumbersIterator(int[] array) {
         this.array = array;

@@ -107,7 +107,7 @@ public class SimpleArrayTest {
     }
 
     @Test
-    public void whenDontHaveNextElement() {
+    public void whenDoNotHaveNextElement() {
         SimpleArray<String> array = new SimpleArray<>(1);
         array.add("text1");
         Iterator<String> iterator = array.iterator();

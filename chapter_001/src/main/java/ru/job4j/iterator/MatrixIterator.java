@@ -34,7 +34,7 @@ public class MatrixIterator implements Iterator<Integer> {
     /**
      * Конструктор класса.
      *
-     * @param array
+     * @param array Обрабатываемый массив.
      */
     public MatrixIterator(int[][] array) {
         this.array = array;

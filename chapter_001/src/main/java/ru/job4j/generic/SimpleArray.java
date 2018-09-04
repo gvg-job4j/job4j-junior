@@ -93,13 +93,11 @@ public class SimpleArray<T> implements Iterable<T> {
      * @return Найденный объект, или null, если ячейка не существует, или пустая.
      */
     public T get(int index) {
-        T element = null;
         if (index < size && index >= 0) {
-            element = array[index];
+            return array[index];
         } else {
             throw new IndexOutOfBoundsException();
         }
-        return element;
     }
 
     /**
@@ -141,13 +139,11 @@ public class SimpleArray<T> implements Iterable<T> {
              */
             @Override
             public T next() {
-                T element = null;
                 if (currentPosition < size) {
-                    element = array[currentPosition++];
+                    return array[currentPosition++];
                 } else {
                     throw new NoSuchElementException();
                 }
-                return element;
             }
         };
     }

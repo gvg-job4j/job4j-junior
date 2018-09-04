@@ -6,10 +6,6 @@ package ru.job4j.generic;
  * @since 15.08.2018
  */
 public class RoleStore<Role extends Base> extends AbstractStore<Role> {
-    /**
-     * Хранилище объектов.
-     */
-    private SimpleArray<Role> store;
 
     /**
      * Конструктор, создает хранилище указанного размера.
@@ -18,6 +14,5 @@ public class RoleStore<Role extends Base> extends AbstractStore<Role> {
      */
     public RoleStore(int size) {
         super(size);
-        this.store = new SimpleArray<>(size);
     }
 }

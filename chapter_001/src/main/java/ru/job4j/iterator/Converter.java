@@ -18,7 +18,6 @@ public class Converter {
     Iterator<Integer> convert(Iterator<Iterator<Integer>> it) {
         return new Iterator<Integer>() {
             Iterator<Integer> iterator = null;
-            Iterator<Iterator<Integer>> parentIterator = it;
 
             /**
              * Метод проверяет наличие следующего элемента итератора.
