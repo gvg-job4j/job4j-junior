@@ -44,15 +44,14 @@ public class LinkedListContainer<E> implements Iterable<E> {
      * @return Найденный элемент или исключение.
      */
     public E get(int index) {
-        if (index < size) {
-            Node<E> item = this.first;
-            for (int i = 0; i < index; i++) {
-                item = item.next;
-            }
-            return item.object;
-        } else {
+        if (index >= size) {
             throw new NoSuchElementException();
         }
+        Node<E> item = this.first;
+        for (int i = 0; i < index; i++) {
+            item = item.next;
+        }
+        return item.object;
     }
 
     /**
