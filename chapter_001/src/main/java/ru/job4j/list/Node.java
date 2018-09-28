@@ -37,15 +37,11 @@ public class Node<T> {
             Node slow = first;
             Node fast = first;
             while (true) {
+                if (slow.next == null || fast == null || fast.next == null) {
+                    break;
+                }
                 slow = slow.next;
-                if (fast.next != null) {
-                    fast = fast.next.next;
-                } else {
-                    break;
-                }
-                if (slow == null || fast == null) {
-                    break;
-                }
+                fast = fast.next.next;
                 if (slow.equals(fast)) {
                     isCycle = true;
                     break;
