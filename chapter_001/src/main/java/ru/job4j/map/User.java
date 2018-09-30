@@ -34,15 +34,15 @@ public class User {
         this.birthday = birthday;
     }
 
-//    /**
-//     * Метод возврашает хеш-код объекта, рассчитанный по полям.
-//     *
-//     * @return Хеш-код.
-//     */
-//    @Override
-//    public int hashCode() {
-//        return this.name.hashCode() + this.birthday.hashCode() + children;
-//    }
+    /**
+     * Метод возврашает хеш-код объекта, рассчитанный по полям.
+     *
+     * @return Хеш-код.
+     */
+    @Override
+    public int hashCode() {
+        return this.name.hashCode() + this.birthday.hashCode() + children;
+    }
 
     /**
      * Метод выполняет сравнение объектов по значениям полей.
