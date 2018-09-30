@@ -61,4 +61,16 @@ public class SimpleSetTest {
         assertTrue(iterator.hasNext());
         assertThat(iterator.next(), is("1"));
     }
+
+    @Test
+    public void whenTryAddSameElement() {
+        SimpleSet<String> list = new SimpleSet<>();
+        String testString = "1";
+        list.add(testString);
+        list.add(testString);
+        Iterator<String> iterator = list.iterator();
+        assertTrue(iterator.hasNext());
+        iterator.next();
+        assertFalse(iterator.hasNext());
+    }
 }

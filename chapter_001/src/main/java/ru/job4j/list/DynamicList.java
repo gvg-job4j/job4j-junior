@@ -88,7 +88,8 @@ public class DynamicList<E> implements Iterable<E> {
                 if (currentCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return current < array.length;
+                return current < array.length && array[current] != null;
+
             }
 
             /**

@@ -24,7 +24,6 @@ public class SimpleSet<E> implements Iterable<E> {
      */
     public SimpleSet() {
         list = new DynamicList<>();
-        count = 0;
     }
 
     /**
