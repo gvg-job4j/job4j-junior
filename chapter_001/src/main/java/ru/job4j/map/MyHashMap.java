@@ -12,13 +12,9 @@ import java.util.NoSuchElementException;
  */
 public class MyHashMap<K, V> implements Iterable<K> {
     /**
-     * Массив значений.
+     * Массив записей.
      */
-    private V[] values;
-    /**
-     * Массив ключей.
-     */
-    private K[] keys;
+    private Node<K, V>[] elements;
     /**
      * Текущий размер таблицы.
      */
@@ -40,8 +36,7 @@ public class MyHashMap<K, V> implements Iterable<K> {
      * Конструктор, создает таблицу с размером по умолчанию.
      */
     public MyHashMap() {
-        this.values = ((V[]) new Object[DEFAULT_INITIAL_CAPACITY]);
-        this.keys = ((K[]) new Object[DEFAULT_INITIAL_CAPACITY]);
+        this.elements = new Node[DEFAULT_INITIAL_CAPACITY];
         resize();
     }
 
@@ -56,9 +51,8 @@ public class MyHashMap<K, V> implements Iterable<K> {
         boolean inserted = false;
         if (key != null) {
             int index = indexFor(hash(key), this.length);
-            if (this.keys[index] == null) {
-                this.keys[index] = key;
-                this.values[index] = value;
+            if (this.elements[index] == null) {
+                this.elements[index] = new Node<>(key, value);
                 inserted = true;
                 this.size++;
                 if (this.size == this.length) {
@@ -76,15 +70,12 @@ public class MyHashMap<K, V> implements Iterable<K> {
         this.length += DEFAULT_INITIAL_CAPACITY;
         if (this.length > 16) {
             modCount++;
-            this.values = Arrays.copyOf(this.values, this.length);
-            this.keys = Arrays.copyOf(this.keys, this.length);
+            this.elements = Arrays.copyOf(this.elements, this.length);
             for (int i = 0; i < this.length; i++) {
-                int newIndex = indexFor(hash(this.keys[i]), this.length);
+                int newIndex = indexFor(hash(this.elements[i].getKey()), this.length);
                 if (newIndex != i) {
-                    this.keys[newIndex] = this.keys[i];
-                    this.values[newIndex] = this.values[i];
-                    this.keys[i] = null;
-                    this.values[i] = null;
+                    this.elements[newIndex] = this.elements[i];
+                    this.elements[i] = null;
                 }
             }
         }
@@ -97,7 +88,8 @@ public class MyHashMap<K, V> implements Iterable<K> {
      * @return Найденное значение или null.
      */
     public V get(K key) {
-        return this.values[indexFor(hash(key), this.length)];
+        Node<K, V> element = this.elements[indexFor(hash(key), this.length)];
+        return (element == null ? null : element.getValue());
     }
 
     /**
@@ -109,9 +101,8 @@ public class MyHashMap<K, V> implements Iterable<K> {
     public boolean delete(K key) {
         boolean deleted = false;
         int index = indexFor(hash(key), this.length);
-        if (this.keys[index] != null) {
-            this.keys[index] = null;
-            this.values[index] = null;
+        if (this.elements[index] != null) {
+            this.elements[index] = null;
             deleted = true;
             this.size--;
         }
@@ -138,6 +129,52 @@ public class MyHashMap<K, V> implements Iterable<K> {
      */
     private int indexFor(int hash, int length) {
         return (length - 1) & hash;
+    }
+
+    /**
+     * Класс описывает запись карты.
+     *
+     * @param <K> Ключ записи.
+     * @param <V> Значение записи.
+     */
+    private static class Node<K, V> {
+        /**
+         * Ключ записи.
+         */
+        private V value;
+        /**
+         * Значение записи.
+         */
+        private K key;
+
+        /**
+         * Конструктор, создает запись с указанными параметрами.
+         *
+         * @param key   Ключ записи.
+         * @param value Значение записи.
+         */
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        /**
+         * Метод возвращает значение записи.
+         *
+         * @return Значение.
+         */
+        public V getValue() {
+            return value;
+        }
+
+        /**
+         * Метод возвращает ключ записи.
+         *
+         * @return Ключ.
+         */
+        public K getKey() {
+            return key;
+        }
     }
 
     /**
@@ -181,10 +218,14 @@ public class MyHashMap<K, V> implements Iterable<K> {
                 K key = null;
                 for (int i = current; i < length; i++) {
                     current++;
-                    if (keys[i] != null) {
-                        key = keys[i];
+                    if (elements[i] != null) {
+                        key = elements[i].getKey();
                         break;
                     }
+//                    if (keys[i] != null) {
+//                        key = keys[i];
+//                        break;
+//                    }
                 }
                 return key;
             }

@@ -43,7 +43,7 @@ public class MyHashMapTest {
     @Test
     public void whenIteratorHasNextThenNext() {
         Iterator<String> myIterator = map.iterator();
-        while (myIterator.hasNext()){
+        while (myIterator.hasNext()) {
             assertNotNull(myIterator.next());
         }
     }
