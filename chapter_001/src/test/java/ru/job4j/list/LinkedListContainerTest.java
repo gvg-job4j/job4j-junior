@@ -1,5 +1,6 @@
 package ru.job4j.list;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ConcurrentModificationException;
@@ -15,19 +16,25 @@ import static org.junit.Assert.*;
  */
 public class LinkedListContainerTest {
 
-    @Test
-    public void whenAddOneElementAndGetFirstThenEqualThisElement() {
-        LinkedListContainer<String> cont = new LinkedListContainer<>();
-        String first = "1";
+    private LinkedListContainer<String> cont = new LinkedListContainer<>();
+    private String first = "1";
+    private String second = "2";
+    private String third = "3";
+
+    @Before
+    public void fillList() {
         cont.add(first);
-        assertThat(cont.get(0), is(first));
+        cont.add(second);
+        cont.add(third);
+    }
+
+    @Test
+    public void whenAddThreeElementsAndGetThirdThenEqualThirdElement() {
+        assertThat(cont.get(2), is(third));
     }
 
     @Test
     public void whenAddOneElementAndTakeNextThenEqualThisElement() {
-        LinkedListContainer<String> cont = new LinkedListContainer<>();
-        String first = "1";
-        cont.add(first);
         Iterator<String> iterator = cont.iterator();
         assertTrue(iterator.hasNext());
         assertThat(iterator.next(), is(first));
@@ -35,10 +42,9 @@ public class LinkedListContainerTest {
 
     @Test
     public void whenAddOneElementAndTakeTwoNextThenException() {
-        LinkedListContainer<String> cont = new LinkedListContainer<>();
-        String first = "1";
-        cont.add(first);
         Iterator<String> iterator = cont.iterator();
+        iterator.next();
+        iterator.next();
         iterator.next();
         try {
             iterator.next();
@@ -50,9 +56,6 @@ public class LinkedListContainerTest {
 
     @Test
     public void whenGetIteratorAddElementTryNextThenException() {
-        LinkedListContainer<String> cont = new LinkedListContainer<>();
-        String first = "1";
-        cont.add(first);
         Iterator<String> iterator = cont.iterator();
         iterator.next();
         cont.add(first);

@@ -12,9 +12,13 @@ import java.util.NoSuchElementException;
  */
 public class LinkedListContainer<E> implements Iterable<E> {
     /**
-     * Текущий элемент, к которому нет привязки.
+     * Первый элемент списка.
      */
     private Node<E> first;
+    /**
+     * Текущий последний элемент списка.
+     */
+    private Node<E> last;
     /**
      * Текущий размер хранилища.
      */
@@ -22,7 +26,7 @@ public class LinkedListContainer<E> implements Iterable<E> {
     /**
      * Счетчик изменений хранилища.
      */
-    private int modCount = 0;
+    private int modCount;
 
     /**
      * Метод добавляет элемент в хранилище.
@@ -31,8 +35,12 @@ public class LinkedListContainer<E> implements Iterable<E> {
      */
     public void add(E element) {
         Node<E> node = new Node<>(element);
-        node.next = this.first;
-        this.first = node;
+        if (this.first == null) {
+            this.first = node;
+        } else {
+            this.last.next = node;
+        }
+        this.last = node;
         size++;
         modCount++;
     }
@@ -44,8 +52,8 @@ public class LinkedListContainer<E> implements Iterable<E> {
      * @return Найденный элемент или исключение.
      */
     public E get(int index) {
-        if (index >= size) {
-            throw new NoSuchElementException();
+        if (index >= size || index < 0) {
+            throw new IllegalArgumentException();
         }
         Node<E> item = this.first;
         for (int i = 0; i < index; i++) {
@@ -77,9 +85,6 @@ public class LinkedListContainer<E> implements Iterable<E> {
              */
             @Override
             public boolean hasNext() {
-                if (currentModCount != modCount) {
-                    throw new ConcurrentModificationException();
-                }
                 return count < size;
             }
 
@@ -91,6 +96,9 @@ public class LinkedListContainer<E> implements Iterable<E> {
             public E next() {
                 if (currentModCount != modCount) {
                     throw new ConcurrentModificationException();
+                }
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
                 }
                 return get(count++);
             }
