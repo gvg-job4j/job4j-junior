@@ -1,6 +1,5 @@
 package ru.job4j.map;
 
-import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -20,10 +19,6 @@ public class MyHashMap<K, V> implements Iterable<K> {
      */
     private int size;
     /**
-     * Максимальный размер таблицы.
-     */
-    private int length;
-    /**
      * Счетчик изменений данных.
      */
     private int modCount;
@@ -37,7 +32,6 @@ public class MyHashMap<K, V> implements Iterable<K> {
      */
     public MyHashMap() {
         this.elements = new Node[DEFAULT_INITIAL_CAPACITY];
-        resize();
     }
 
     /**
@@ -50,12 +44,13 @@ public class MyHashMap<K, V> implements Iterable<K> {
     public boolean insert(K key, V value) {
         boolean inserted = false;
         if (key != null) {
-            int index = indexFor(hash(key), this.length);
+            int index = indexFor(hash(key), this.elements.length);
             if (this.elements[index] == null) {
                 this.elements[index] = new Node<>(key, value);
                 inserted = true;
+                this.modCount++;
                 this.size++;
-                if (this.size == this.length) {
+                if (this.size == this.elements.length) {
                     resize();
                 }
             }
@@ -67,18 +62,12 @@ public class MyHashMap<K, V> implements Iterable<K> {
      * Метод выполняет изменение размера таблицы.
      */
     private void resize() {
-        this.length += DEFAULT_INITIAL_CAPACITY;
-        if (this.length > 16) {
-            modCount++;
-            this.elements = Arrays.copyOf(this.elements, this.length);
-            for (int i = 0; i < this.length; i++) {
-                int newIndex = indexFor(hash(this.elements[i].getKey()), this.length);
-                if (newIndex != i) {
-                    this.elements[newIndex] = this.elements[i];
-                    this.elements[i] = null;
-                }
-            }
+        Node<K, V>[] newElements = new Node[this.elements.length + DEFAULT_INITIAL_CAPACITY];
+        for (int i = 0; i < this.elements.length; i++) {
+            int newIndex = indexFor(hash(this.elements[i].getKey()), newElements.length);
+            newElements[newIndex] = this.elements[i];
         }
+        this.elements = newElements;
     }
 
     /**
@@ -88,7 +77,7 @@ public class MyHashMap<K, V> implements Iterable<K> {
      * @return Найденное значение или null.
      */
     public V get(K key) {
-        Node<K, V> element = this.elements[indexFor(hash(key), this.length)];
+        Node<K, V> element = this.elements[indexFor(hash(key), this.elements.length)];
         return (element == null ? null : element.getValue());
     }
 
@@ -100,10 +89,11 @@ public class MyHashMap<K, V> implements Iterable<K> {
      */
     public boolean delete(K key) {
         boolean deleted = false;
-        int index = indexFor(hash(key), this.length);
+        int index = indexFor(hash(key), this.elements.length);
         if (this.elements[index] != null) {
             this.elements[index] = null;
             deleted = true;
+            this.modCount++;
             this.size--;
         }
         return deleted;
@@ -184,7 +174,8 @@ public class MyHashMap<K, V> implements Iterable<K> {
      */
     @Override
     public Iterator<K> iterator() {
-        return new Iterator<K>() {
+//        return new Iterator<K>() {
+        Iterator<K> iterator = new Iterator<K>() {
             /**
              * Счетчик изменений на момент создания итератора.
              */
@@ -200,10 +191,7 @@ public class MyHashMap<K, V> implements Iterable<K> {
              */
             @Override
             public boolean hasNext() {
-                if (currentModCount != modCount) {
-                    throw new ConcurrentModificationException();
-                }
-                return current < length;
+                return current < size;
             }
 
             /**
@@ -212,23 +200,23 @@ public class MyHashMap<K, V> implements Iterable<K> {
              */
             @Override
             public K next() {
+                if (currentModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
                 K key = null;
-                for (int i = current; i < length; i++) {
+                for (int i = current; i < size; i++) {
                     current++;
                     if (elements[i] != null) {
                         key = elements[i].getKey();
                         break;
                     }
-//                    if (keys[i] != null) {
-//                        key = keys[i];
-//                        break;
-//                    }
                 }
                 return key;
             }
         };
+        return iterator;
     }
 }

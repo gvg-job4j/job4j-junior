@@ -47,4 +47,30 @@ public class MyHashMapTest {
             assertNotNull(myIterator.next());
         }
     }
+
+    @Test
+    public void whenNoNextThenException() {
+        Iterator<String> myIterator = map.iterator();
+        while (myIterator.hasNext()) {
+            assertNotNull(myIterator.next());
+        }
+        try {
+            myIterator.next();
+            fail("Expected NoSuchElementException");
+        } catch (NoSuchElementException e) {
+            assertNotEquals("", e.getMessage());
+        }
+    }
+
+    @Test
+    public void whenChangeMapAndGetNextThenException() {
+        Iterator<String> myIterator = map.iterator();
+        map.delete("1");
+        try {
+            myIterator.next();
+            fail("Expected ConcurrentModificationException");
+        } catch (ConcurrentModificationException e) {
+            assertNotEquals("", e.getMessage());
+        }
+    }
 }
