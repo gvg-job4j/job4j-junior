@@ -174,8 +174,7 @@ public class MyHashMap<K, V> implements Iterable<K> {
      */
     @Override
     public Iterator<K> iterator() {
-//        return new Iterator<K>() {
-        Iterator<K> iterator = new Iterator<K>() {
+        return new Iterator<K>() {
             /**
              * Счетчик изменений на момент создания итератора.
              */
@@ -207,9 +206,9 @@ public class MyHashMap<K, V> implements Iterable<K> {
                     throw new NoSuchElementException();
                 }
                 K key = null;
-                for (int i = current; i < size; i++) {
-                    current++;
+                for (int i = current; i < elements.length; i++) {
                     if (elements[i] != null) {
+                        current++;
                         key = elements[i].getKey();
                         break;
                     }
@@ -217,6 +216,5 @@ public class MyHashMap<K, V> implements Iterable<K> {
                 return key;
             }
         };
-        return iterator;
     }
 }
