@@ -13,7 +13,6 @@ import static org.junit.Assert.*;
  * @since 09.10.2018
  */
 public class MyHashMapTest {
-
     MyHashMap<String, String> map;
 
     @Before

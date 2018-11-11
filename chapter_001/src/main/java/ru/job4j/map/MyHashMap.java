@@ -180,9 +180,13 @@ public class MyHashMap<K, V> implements Iterable<K> {
              */
             private final int currentModCount = modCount;
             /**
-             * Текущий индекс ячейки.
+             * Счетчик итератора.
              */
             private int current;
+            /**
+             * Текущий индекс ячейки.
+             */
+            private int position;
 
             /**
              * Метод выполняет проверку на наличие следующей записи.
@@ -206,10 +210,10 @@ public class MyHashMap<K, V> implements Iterable<K> {
                     throw new NoSuchElementException();
                 }
                 K key = null;
-                for (int i = current; i < elements.length; i++) {
-                    if (elements[i] != null) {
+                for (; position < elements.length; position++) {
+                    if (elements[position] != null) {
                         current++;
-                        key = elements[i].getKey();
+                        key = elements[position++].getKey();
                         break;
                     }
                 }
