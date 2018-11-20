@@ -19,10 +19,6 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
      * Счетчик изменений дерева.
      */
     private int modCount;
-    /**
-     * Список элементов дерева.
-     */
-    private List<E> elements = new ArrayList<>();
 
     /**
      * Конструктор, создает дерево с корнем, содержащим переданное значение.
@@ -31,7 +27,6 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
      */
     public Tree(E element) {
         this.root = new Node<>(element);
-        this.elements.add(element);
     }
 
     /**
@@ -61,7 +56,6 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         Node<E> childNode = new Node<>(child);
         if (!parent.leaves().contains(childNode)) {
             parent.add(childNode);
-            this.elements.add(child);
             added = true;
             this.size++;
             this.modCount++;
@@ -106,12 +100,33 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
              */
             private final int currentModCount = modCount;
             /**
-             * Счетчик элементов.
+             * Счетчик значений.
              */
             private int currentCount;
+            /**
+             * Текущий проверяемый корень дерева.
+             */
+            private Node<E> currentRoot = root;
+            /**
+             * Список проверенных узлов.
+             */
+            private List<Node<E>> lookedNodes = new ArrayList<>();
+            /**
+             * Счетчик проверенных узлов.
+             */
+            private int treeCount;
+            /**
+             * Счетчик подчиненных элементов проверяемого узла.
+             */
+            private int treeChildrenCount;
+            /**
+             * Текущий проверяемый элемент.
+             */
+            private Node<E> treeNode;
 
             /**
              * Метод проверяет наличие следующего элемента дерева.
+             *
              * @return Результат проверки.
              */
             @Override
@@ -120,7 +135,8 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
             }
 
             /**
-             * Метод ищет следующий элемент дерева.
+             * Метод возвращает следующий элемент дерева.
+             *
              * @return Следующий элемент.
              */
             @Override
@@ -131,7 +147,59 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                return elements.get(currentCount++);
+                return getElement(this.currentCount++);
+            }
+
+            /**
+             * Метод получает следующий элемент дерева.
+             *
+             * @param count Текущий номер элемента.
+             * @return Значение элемента или null.
+             */
+            private E getElement(int count) {
+                E value = null;
+                if (count == 0) {
+                    value = this.currentRoot.getValue();
+                    this.lookedNodes.add(this.currentRoot);
+                } else {
+                    this.treeNode = null;
+                    while (this.treeCount < count) {
+                        this.treeCount++;
+                        if (this.treeChildrenCount < this.currentRoot.leaves().size()) {
+                            this.treeNode = this.currentRoot.leaves().get(this.treeChildrenCount++);
+                        } else {
+                            this.lookedNodes.add(this.currentRoot);
+                            lookForNewCurrentNode(this.currentRoot);
+                        }
+                        if (this.treeNode == null) {
+                            this.lookedNodes.add(this.currentRoot);
+                            lookForNewCurrentNode(root);
+                        }
+                        value = this.treeNode.getValue();
+                    }
+                }
+                return value;
+            }
+
+            /**
+             * Метод устанавливает новый корень дерева из еще не проверенных узлов.
+             *
+             * @param rootNode Новый корень.
+             */
+            private void lookForNewCurrentNode(Node<E> rootNode) {
+                for (Node<E> node : this.lookedNodes) {
+                    for (Node<E> childNode : node.leaves()) {
+                        if (!this.lookedNodes.contains(childNode) && childNode.leaves().size() > 0) {
+                            this.currentRoot = childNode;
+                            this.treeChildrenCount = 0;
+                            this.treeNode = this.currentRoot.leaves().get(this.treeChildrenCount++);
+                            break;
+                        }
+                    }
+                    if (!rootNode.equals(this.currentRoot)) {
+                        break;
+                    }
+                }
             }
         };
     }

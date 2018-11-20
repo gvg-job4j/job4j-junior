@@ -24,7 +24,7 @@ public class TreeTest {
     }
 
     @Test
-    public void when6ElFindNotExitThenOptionEmpty() {
+    public void whenSixElFindNotExitThenOptionEmpty() {
         Tree<Integer> tree = new Tree<>(1);
         tree.add(1, 2);
         assertThat(
@@ -54,10 +54,18 @@ public class TreeTest {
         tree.add(1, 3);
         tree.add(1, 4);
         tree.add(4, 5);
+        tree.add(4, 7);
         tree.add(5, 6);
+        tree.add(4, 8);
+        tree.add(6, 10);
+        tree.add(6, 11);
+        tree.add(5, 9);
+        tree.add(10, 12);
         Iterator<Integer> myIterator = tree.iterator();
         while (myIterator.hasNext()) {
-            assertNotNull(myIterator.next());
+            Integer value = myIterator.next();
+            System.out.println(value);
+            assertNotNull(value);
         }
     }
 

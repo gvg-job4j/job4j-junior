@@ -55,6 +55,15 @@ public class Node<E extends Comparable<E>> {
     }
 
     /**
+     * Метод возвращает значение элемента дерева.
+     *
+     * @return Значение элемента.
+     */
+    public E getValue() {
+        return this.value;
+    }
+
+    /**
      * Метод выполняет сравнение элемента с переданным элементом.
      *
      * @param element Переданный элемент.
