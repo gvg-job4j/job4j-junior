@@ -30,6 +30,24 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
     }
 
     /**
+     * Метод определяет бинарность дерева.
+     *
+     * @return Результат проверки.
+     */
+    public boolean isBinary() {
+        boolean isBinary = true;
+        Iterator<E> newIterator = iterator();
+        while (newIterator.hasNext()) {
+            Optional<Node<E>> optional = this.findBy(newIterator.next());
+            if (optional.isPresent() && optional.get().leaves().size() > 2) {
+                isBinary = false;
+                break;
+            }
+        }
+        return isBinary;
+    }
+
+    /**
      * Метод создает элемент дерева и добавляет его список
      * подчиненных в элемент, содержащий указанное значение.
      *

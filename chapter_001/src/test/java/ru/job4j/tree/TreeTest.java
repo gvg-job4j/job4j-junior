@@ -97,4 +97,28 @@ public class TreeTest {
             assertNotEquals("", thrown.getMessage());
         }
     }
+
+    @Test
+    public void whenChildSizeMoreThenTwoThenFalse() {
+        Tree<Integer> tree = new Tree<>(1);
+        tree.add(1, 2);
+        tree.add(1, 3);
+        tree.add(1, 4);
+        tree.add(4, 5);
+        tree.add(5, 6);
+        assertFalse(tree.isBinary());
+    }
+
+    @Test
+    public void whenChildSizeLessThenTwoThenTrue() {
+        Tree<Integer> tree = new Tree<>(1);
+        tree.add(1, 2);
+        tree.add(1, 3);
+        tree.add(4, 5);
+        tree.add(5, 6);
+        tree.add(5, 7);
+        tree.add(7, 8);
+        tree.add(2, 9);
+        assertTrue(tree.isBinary());
+    }
 }
