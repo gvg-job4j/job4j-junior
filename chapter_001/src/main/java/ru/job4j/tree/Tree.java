@@ -27,6 +27,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
      */
     public Tree(E element) {
         this.root = new Node<>(element);
+        size++;
     }
 
     /**
@@ -122,25 +123,9 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
              */
             private int currentCount;
             /**
-             * Текущий проверяемый корень дерева.
+             * Список элементов дерева.
              */
-            private Node<E> currentRoot = root;
-            /**
-             * Список проверенных узлов.
-             */
-            private List<Node<E>> lookedNodes = new ArrayList<>();
-            /**
-             * Счетчик проверенных узлов.
-             */
-            private int treeCount;
-            /**
-             * Счетчик подчиненных элементов проверяемого узла.
-             */
-            private int treeChildrenCount;
-            /**
-             * Текущий проверяемый элемент.
-             */
-            private Node<E> treeNode;
+            private Queue<Node<E>> data = new LinkedList<>();
 
             /**
              * Метод проверяет наличие следующего элемента дерева.
@@ -149,7 +134,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
              */
             @Override
             public boolean hasNext() {
-                return this.currentCount <= size;
+                return this.currentCount < size;
             }
 
             /**
@@ -165,57 +150,24 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                return getElement(this.currentCount++);
-            }
-
-            /**
-             * Метод получает следующий элемент дерева.
-             *
-             * @param count Текущий номер элемента.
-             * @return Значение элемента или null.
-             */
-            private E getElement(int count) {
-                E value = null;
-                if (count == 0) {
-                    value = this.currentRoot.getValue();
-                    this.lookedNodes.add(this.currentRoot);
-                } else {
-                    this.treeNode = null;
-                    while (this.treeCount < count) {
-                        this.treeCount++;
-                        if (this.treeChildrenCount < this.currentRoot.leaves().size()) {
-                            this.treeNode = this.currentRoot.leaves().get(this.treeChildrenCount++);
-                        } else {
-                            this.lookedNodes.add(this.currentRoot);
-                            lookForNewCurrentNode(this.currentRoot);
-                        }
-                        if (this.treeNode == null) {
-                            this.lookedNodes.add(this.currentRoot);
-                            lookForNewCurrentNode(root);
-                        }
-                        value = this.treeNode.getValue();
-                    }
+                if (data.isEmpty()) {
+                    data.offer(root);
+                    fillQueue(root);
                 }
-                return value;
+                Node<E> el = data.poll();
+                this.currentCount++;
+                return el.getValue();
             }
 
             /**
-             * Метод устанавливает новый корень дерева из еще не проверенных узлов.
-             *
-             * @param rootNode Новый корень.
+             * Метод выполняет заполнение списка элементов дерева.
+             * @param currentRoot Текущий корень дерева.
              */
-            private void lookForNewCurrentNode(Node<E> rootNode) {
-                for (Node<E> node : this.lookedNodes) {
-                    for (Node<E> childNode : node.leaves()) {
-                        if (!this.lookedNodes.contains(childNode) && childNode.leaves().size() > 0) {
-                            this.currentRoot = childNode;
-                            this.treeChildrenCount = 0;
-                            this.treeNode = this.currentRoot.leaves().get(this.treeChildrenCount++);
-                            break;
-                        }
-                    }
-                    if (!rootNode.equals(this.currentRoot)) {
-                        break;
+            private void fillQueue(Node<E> currentRoot) {
+                for (Node<E> child : currentRoot.leaves()) {
+                    data.offer(child);
+                    if (child.leaves().size() > 0) {
+                        fillQueue(child);
                     }
                 }
             }

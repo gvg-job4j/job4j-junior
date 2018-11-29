@@ -114,6 +114,7 @@ public class TreeTest {
         Tree<Integer> tree = new Tree<>(1);
         tree.add(1, 2);
         tree.add(1, 3);
+        tree.add(3, 4);
         tree.add(4, 5);
         tree.add(5, 6);
         tree.add(5, 7);
