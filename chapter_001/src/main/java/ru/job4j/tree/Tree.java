@@ -154,9 +154,12 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
                     data.offer(root);
                     fillQueue(root);
                 }
-                Node<E> el = data.poll();
+                Node<E> element = data.poll();
+                if (element.leaves().size() > 0) {
+                    fillQueue(element);
+                }
                 this.currentCount++;
-                return el.getValue();
+                return element.getValue();
             }
 
             /**
@@ -165,9 +168,8 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
              */
             private void fillQueue(Node<E> currentRoot) {
                 for (Node<E> child : currentRoot.leaves()) {
-                    data.offer(child);
-                    if (child.leaves().size() > 0) {
-                        fillQueue(child);
+                    if (!data.contains(child)) {
+                        data.offer(child);
                     }
                 }
             }
