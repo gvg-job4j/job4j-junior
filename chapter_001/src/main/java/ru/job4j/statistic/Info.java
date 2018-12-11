@@ -2,6 +2,8 @@ package ru.job4j.statistic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Valeriy Gyrievskikh
@@ -60,26 +62,24 @@ public class Info {
         } else if (current.size() == 0) {
             this.deleted = previous.size();
         } else {
-            List<Store.User> lookedList = new ArrayList<>();
-            for (int i = 0; i < previous.size(); i++) {
-                if (!current.contains(previous.get(i))) {
-                    this.deleted++;
-                } else {
-                    for (Store.User element : current) {
-                        if (element.getId() == previous.get(i).getId()) {
-                            if (!element.getName().equals(previous.get(i).getName())) {
-                                this.changed++;
-                            }
-                            break;
-                        }
+            Map<Integer, Store.User> currentMap = current.stream().collect(
+                    Collectors.toMap(Store.User::getId, user -> user));
+            Map<Integer, Store.User> prevMap = previous.stream().collect(
+                    Collectors.toMap(Store.User::getId, user -> user));
+            int looked = 0;
+            for (Map.Entry<Integer, Store.User> entry : prevMap.entrySet()) {
+                if (currentMap.entrySet().contains(entry)) {
+                    Store.User user = currentMap.get(entry.getKey());
+                    if (!user.getName().equals(entry.getValue().getName())) {
+                        this.changed++;
                     }
-                    lookedList.add(previous.get(i));
+                    looked++;
+                } else {
+                    this.deleted++;
                 }
             }
-            for (int i = 0; i < current.size(); i++) {
-                if (!lookedList.contains(current.get(i)) && !previous.contains(current.get(i))) {
-                    this.added++;
-                }
+            if (looked < currentMap.size()) {
+                this.added = currentMap.size() - looked;
             }
         }
     }
