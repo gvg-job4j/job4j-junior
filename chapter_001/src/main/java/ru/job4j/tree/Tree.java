@@ -127,6 +127,10 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
              */
             private Queue<Node<E>> data = new LinkedList<>();
 
+            {
+                data.offer(root);
+            }
+
             /**
              * Метод проверяет наличие следующего элемента дерева.
              *
@@ -150,28 +154,14 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                if (data.isEmpty()) {
-                    data.offer(root);
-                    fillQueue(root);
-                }
                 Node<E> element = data.poll();
                 if (element.leaves().size() > 0) {
-                    fillQueue(element);
-                }
-                this.currentCount++;
-                return element.getValue();
-            }
-
-            /**
-             * Метод выполняет заполнение списка элементов дерева.
-             * @param currentRoot Текущий корень дерева.
-             */
-            private void fillQueue(Node<E> currentRoot) {
-                for (Node<E> child : currentRoot.leaves()) {
-                    if (!data.contains(child)) {
+                    for (Node<E> child : element.leaves()) {
                         data.offer(child);
                     }
                 }
+                this.currentCount++;
+                return element.getValue();
             }
         };
     }
