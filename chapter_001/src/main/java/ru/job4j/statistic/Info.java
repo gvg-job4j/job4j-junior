@@ -62,25 +62,19 @@ public class Info {
         } else if (current.size() == 0) {
             this.deleted = previous.size();
         } else {
-            Map<Integer, Store.User> currentMap = current.stream().collect(
-                    Collectors.toMap(Store.User::getId, user -> user));
             Map<Integer, Store.User> prevMap = previous.stream().collect(
                     Collectors.toMap(Store.User::getId, user -> user));
-            int looked = 0;
-            for (Map.Entry<Integer, Store.User> entry : prevMap.entrySet()) {
-                if (currentMap.entrySet().contains(entry)) {
-                    Store.User user = currentMap.get(entry.getKey());
-                    if (!user.getName().equals(entry.getValue().getName())) {
+            for (Store.User value : current) {
+                Store.User user = prevMap.remove(value.getId());
+                if (user == null) {
+                    this.added++;
+                } else {
+                    if (!user.getName().equals(value.getName())) {
                         this.changed++;
                     }
-                    looked++;
-                } else {
-                    this.deleted++;
                 }
             }
-            if (looked < currentMap.size()) {
-                this.added = currentMap.size() - looked;
-            }
+            this.deleted = prevMap.size();
         }
     }
 }
