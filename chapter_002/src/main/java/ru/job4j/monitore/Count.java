@@ -19,7 +19,7 @@ public class Count {
     /**
      * Метод возвращает текущее значение счетчика.
      *
-     * @return
+     * @return Значение счетчика.
      */
     public synchronized int incremant() {
         return this.value;

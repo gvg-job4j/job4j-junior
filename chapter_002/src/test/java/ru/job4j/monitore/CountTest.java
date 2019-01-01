@@ -1,6 +1,5 @@
-package monitore;
+package ru.job4j.monitore;
 
-import ru.job4j.monitore.Count;
 import org.junit.Test;
 
 import static org.junit.Assert.assertThat;

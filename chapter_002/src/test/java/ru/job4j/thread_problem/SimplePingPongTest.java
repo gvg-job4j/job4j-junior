@@ -1,7 +1,6 @@
-package thread_problem;
+package ru.job4j.thread_problem;
 
 import org.junit.Test;
-import ru.job4j.thread_problem.PingPong;
 
 public class SimplePingPongTest {
 
