@@ -8,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 import static org.hamcrest.core.Is.is;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 
 /**
  * @author Valeriy Gyrievskikh
@@ -50,5 +49,16 @@ public class ByteInputTest {
         ByteInput input = new ByteInput();
         input.dropAbuses(bais, baos, abuse);
         assertThat(baos.toString(), is("Hello World Its Java!"));
+    }
+
+    @Test
+    public void whenReadFileWriteToFileSorted() {
+
+        File fileRead = new File("read.txt");
+        if (fileRead.exists()) {
+            File fileWrite = new File("write.txt");
+            ByteInput input = new ByteInput();
+            input.sort(fileRead, fileWrite);
+        }
     }
 }
