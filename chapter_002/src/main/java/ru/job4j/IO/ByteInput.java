@@ -2,6 +2,7 @@ package ru.job4j.IO;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -42,30 +43,23 @@ public class ByteInput implements Sort {
     void dropAbuses(InputStream in, OutputStream out, String[] abuse) {
         try (InputStream input = in
         ) {
-            StringBuilder bytes = new StringBuilder();
             int a = 0;
+            StringBuilder bytes = new StringBuilder();
             while ((a = input.read()) != -1) {
-                if (a == 32) {
-                    boolean isAbuse = false;
-                    for (int i = 0; i < abuse.length; i++) {
-                        if (abuse[i].equals(bytes.toString())) {
-                            isAbuse = true;
-                            break;
-                        }
-                    }
-                    if (!isAbuse) {
-                        bytes.appendCodePoint(a);
-                        out.write(bytes.toString().getBytes());
-                        out.flush();
-                    }
-                    bytes = new StringBuilder();
-                } else {
-                    bytes.appendCodePoint(a);
-                }
+                bytes.appendCodePoint(a);
             }
-            if (bytes.length() > 0) {
-                out.write(bytes.toString().getBytes());
+            input.close();
+            List<String> restWords = Arrays.asList(abuse);
+            List<String> inWords = Arrays.asList(bytes.toString().split(" "));
+            List<String> allowWords = inWords.stream().filter((s) -> !restWords.contains(s)).collect(Collectors.toList());
+            String empty = " ";
+            for (int i = 0; i < allowWords.size(); i++) {
+                out.write(allowWords.get(i).getBytes());
                 out.flush();
+                if(i < allowWords.size() - 1){
+                    out.write(empty.getBytes());
+                    out.flush();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
