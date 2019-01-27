@@ -41,6 +41,17 @@ public class ByteInputTest {
     }
 
     @Test
+    public void whenInputNotHaveAbuseWorldsThenOutputDonHave() {
+        String myStrObj = "Hello World Its Java!";
+        String[] abuse = new String[]{"Pithon", "not", "good"};
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayInputStream bais = new ByteArrayInputStream(myStrObj.getBytes());
+        ByteInput input = new ByteInput();
+        input.dropAbuses(bais, baos, abuse);
+        assertThat(baos.toString(), is("Hello World Its Java!"));
+    }
+
+    @Test
     public void whenInputDontHaveAbuseWorldsThenOutputAll() {
         String myStrObj = "Hello World Its Java!";
         String[] abuse = new String[]{"HelloWorld", "ItsJava"};

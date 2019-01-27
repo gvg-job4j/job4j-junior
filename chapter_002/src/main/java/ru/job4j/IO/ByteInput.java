@@ -2,6 +2,7 @@ package ru.job4j.IO;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,23 +44,15 @@ public class ByteInput implements Sort {
     void dropAbuses(InputStream in, OutputStream out, String[] abuse) {
         try (InputStream input = in
         ) {
-            int a = 0;
-            StringBuilder bytes = new StringBuilder();
-            while ((a = input.read()) != -1) {
-                bytes.appendCodePoint(a);
-            }
-            input.close();
-            List<String> restWords = Arrays.asList(abuse);
-            List<String> inWords = Arrays.asList(bytes.toString().split(" "));
-            List<String> allowWords = inWords.stream().filter((s) -> !restWords.contains(s)).collect(Collectors.toList());
-            String empty = " ";
-            for (int i = 0; i < allowWords.size(); i++) {
-                out.write(allowWords.get(i).getBytes());
-                out.flush();
-                if(i < allowWords.size() - 1){
-                    out.write(empty.getBytes());
-                    out.flush();
-                }
+            BufferedReader br = new BufferedReader(new InputStreamReader(input));
+            Stream<String> abuseStream = Arrays.stream(abuse);
+            String line;
+            while ((line = br.readLine()) != null){
+                final String[] goodLine = {line};
+                abuseStream.forEach(s -> goodLine[0] = goodLine[0].replace(s, "").trim().replace("  ", " "));
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out));
+                bw.write(goodLine[0]);
+                bw.flush();
             }
         } catch (IOException e) {
             e.printStackTrace();
