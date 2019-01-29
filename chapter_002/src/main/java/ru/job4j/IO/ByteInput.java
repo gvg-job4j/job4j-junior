@@ -47,7 +47,7 @@ public class ByteInput implements Sort {
             BufferedReader br = new BufferedReader(new InputStreamReader(input));
             Stream<String> abuseStream = Arrays.stream(abuse);
             String line;
-            while ((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 final String[] goodLine = {line};
                 abuseStream.forEach(s -> goodLine[0] = goodLine[0].replace(s, "").trim().replace("  ", " "));
                 BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out));
@@ -95,8 +95,6 @@ public class ByteInput implements Sort {
                 }
                 fileDest.close();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
