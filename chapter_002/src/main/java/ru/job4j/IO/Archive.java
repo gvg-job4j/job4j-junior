@@ -13,6 +13,13 @@ import java.util.zip.ZipOutputStream;
  */
 public class Archive {
 
+    private String directory;
+    private String exts;
+    private String output;
+
+    public Archive(String ... args){
+
+    }
     /**
      * Метод выполняет архивирование файлов с указанными расширениями в указанной папке.
      *
