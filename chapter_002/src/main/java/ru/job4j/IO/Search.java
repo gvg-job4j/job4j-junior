@@ -22,23 +22,12 @@ public class Search {
             Queue<File> dirList = new LinkedList<>();
             dirList.offer(parentDir);
             while (!dirList.isEmpty()) {
-                File file = dirList.poll();
-                File[] filesInDir = file.listFiles();
-                if (filesInDir != null) {
-                    for (int i = 0; i < filesInDir.length; i++) {
-                        if (filesInDir[i].exists()) {
-                            if (filesInDir[i].isDirectory()) {
-                                dirList.offer(filesInDir[i]);
-                            } else {
-                                int pointIndex = filesInDir[i].getName().lastIndexOf('.');
-                                if (pointIndex != -1) {
-                                    String ext = filesInDir[i].getName().substring(pointIndex + 1);
-                                    if (exts.stream().anyMatch((s) -> s.equals(ext)) && !files.contains(filesInDir[i])) {
-                                        files.add(filesInDir[i]);
-                                    }
-                                }
-                            }
-                        }
+                File parentFile = dirList.poll();
+                for (File file : parentFile.listFiles()) {
+                    if (file.isDirectory()) {
+                        dirList.offer(file);
+                    } else {
+                        files.add(file);
                     }
                 }
             }

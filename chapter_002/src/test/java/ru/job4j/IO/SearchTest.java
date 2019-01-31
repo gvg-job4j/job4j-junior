@@ -46,7 +46,7 @@ public class SearchTest {
             }
         }
         Search searchFiles = new Search();
-        List<File> files = searchFiles.files(parentDir.getPath(), Arrays.asList("txt", "ddd"));
-        assertThat(files.size(), is(number * 2));
+        List<File> files = searchFiles.files(parentDir.getPath(), Arrays.asList("txt", "ddd", "pdf", "rtf"));
+        assertThat(files.size(), is(number * 4));
     }
 }
