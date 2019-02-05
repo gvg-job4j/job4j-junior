@@ -1,9 +1,11 @@
 package ru.job4j.IO;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,16 +18,19 @@ import static org.hamcrest.core.Is.is;
  */
 public class SearchTest {
 
-    @Test
-    public void getFileListFromParent() {
+    private Search searchFiles = new Search();
+    private File parentDir;
+    private int number = 5;
+
+    @Before
+    public void setFileStructure() {
         String mainParent = System.getProperty("java.io.tmpdir");
-        File parentDir = new File(mainParent + "\\java_search");
-        int number = 5;
+        parentDir = new File(mainParent + "\\java_search");
         if (!parentDir.exists()) {
             parentDir.mkdir();
         }
         if (parentDir.exists()) {
-            System.out.println(parentDir.getPath());
+//            System.out.println(parentDir.getPath());
             for (int i = 0; i < number; i++) {
                 File folder = new File(parentDir.getPath() + "\\" + Integer.toString(i));
                 if (!folder.exists()) {
@@ -45,8 +50,23 @@ public class SearchTest {
                 }
             }
         }
-        Search searchFiles = new Search();
+    }
+
+    @Test
+    public void whenGetFileListWithFourExtFromParent() {
         List<File> files = searchFiles.files(parentDir.getPath(), Arrays.asList("txt", "ddd", "pdf", "rtf"));
         assertThat(files.size(), is(number * 4));
+    }
+
+    @Test
+    public void whenGetFileListWithTwoExtFromParent() {
+        List<File> files = searchFiles.files(parentDir.getPath(), Arrays.asList("txt", "ddd"));
+        assertThat(files.size(), is(number * 2));
+    }
+
+    @Test
+    public void whenGetFileListWithNoExtFromParent() {
+        List<File> files = searchFiles.files(parentDir.getPath(), new ArrayList<String>());
+        assertThat(files.size(), is(0));
     }
 }

@@ -27,11 +27,25 @@ public class Search {
                     if (file.isDirectory()) {
                         dirList.offer(file);
                     } else {
-                        files.add(file);
+                        checkExtensions(file, files, exts);
                     }
                 }
             }
         }
         return files;
+    }
+
+    /**
+     * Метод выполняет добавление файлов, подходящих по расширению, в список.
+     *
+     * @param file  Добавляемый файл.
+     * @param files Список файлов.
+     * @param exts  Список разрешенных расширений.
+     */
+    private void checkExtensions(File file, List<File> files, List<String> exts) {
+        String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+        if (exts.stream().anyMatch(s -> s.equals(ext))) {
+            files.add(file);
+        }
     }
 }
