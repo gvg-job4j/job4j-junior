@@ -17,7 +17,7 @@ public class ConsoleChat {
 
     public static void main(String[] args) {
         ConsoleChat chat = new ConsoleChat();
-        chat.doChat();
+        chat.doChat(System.in);
     }
 
     /**
@@ -27,7 +27,7 @@ public class ConsoleChat {
      * Если пользователь вводит слово "Продолжить", вывод ответов возобновляется.
      * Если пользователь вводит слово "Закончить", чат завершается.
      */
-    public void doChat() {
+    public void doChat(InputStream input) {
         File fileIn = new File("in.txt");
         if (!fileIn.exists()) {
             List<String> lines = Arrays.asList("test",
@@ -42,10 +42,9 @@ public class ConsoleChat {
                 e.printStackTrace();
             }
         }
-        try {
+        try (Scanner in = new Scanner(input);) {
             File fileOut = new File("out.txt");
             fileOut.createNewFile();
-            Scanner in = new Scanner(System.in);
             String userSay = "";
             String compSay = "";
             boolean canSay = true;
@@ -54,10 +53,11 @@ public class ConsoleChat {
             FileWriter fw = new FileWriter(fileOut);
             while (in.hasNextLine()) {
                 userSay = in.nextLine();
+                System.out.println("User say:" + userSay);
                 writeStringInFile(fw, userSay, false);
                 if (userSay.toLowerCase().equals("закончить")) {
                     compSay = "Chat closed. Bye!";
-                    System.out.println(compSay);
+                    System.out.println("Comp say:" + compSay);
                     writeStringInFile(fw, compSay, true);
                     break;
                 }
@@ -68,7 +68,7 @@ public class ConsoleChat {
                     raf.seek(answers.get(index));
                     raf.getFilePointer();
                     compSay = raf.readLine();
-                    System.out.println(compSay);
+                    System.out.println("Comp say:" + compSay);
                     writeStringInFile(fw, compSay, false);
                 }
             }
