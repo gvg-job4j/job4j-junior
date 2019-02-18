@@ -10,6 +10,11 @@ import java.util.zip.ZipOutputStream;
  * @since 29.01.2019
  */
 public class Archive {
+
+    /**
+     * Список входных параметров.
+     */
+    private String[] args;
     /**
      * Путь к папке, которую архивируем.
      */
@@ -24,35 +29,12 @@ public class Archive {
     private String output;
 
     /**
-     * Конструктор, инициализирует переменные, запускает архивирование.
+     * Конструктор, инициализирует переменные.
      *
      * @param args Список входных параметров.
      */
     public Archive(String... args) {
-        int dir = -1;
-        int out = -1;
-        int ex = -1;
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-d")) {
-                dir = i;
-            }
-            if (args[i].equals("-e")) {
-                ex = i;
-            }
-            if (args[i].equals("-o")) {
-                out = i;
-            }
-        }
-        if (dir != -1) {
-            directory(args[dir + 1]);
-        }
-        if (out != -1) {
-            output(args[out + 1]);
-        }
-        if (ex != -1) {
-            exclude(Arrays.copyOfRange(args, ex + 1, out));
-        }
-        createArchive();
+        this.args = args;
     }
 
     /**
@@ -89,6 +71,7 @@ public class Archive {
      * Метод выполняет архивирование файлов с указанными расширениями в указанной папке.
      */
     public void createArchive() {
+        intParams(this.args);
         if (directory.isEmpty() || output.isEmpty() || exts.size() == 0) {
             System.out.println("Not enough data to create an archive!");
             return;
@@ -106,23 +89,7 @@ public class Archive {
                         if (filesInDir[i].getName().equals(output)) {
                             continue;
                         }
-                        String entryName = filesInDir[i].getPath().substring(directory.length() + 1);
-                        if (filesInDir[i].isDirectory()) {
-                            zipStream.putNextEntry(new ZipEntry(entryName + File.separator));
-                            dirList.offer(filesInDir[i]);
-                        } else {
-                            int pointIndex = filesInDir[i].getName().lastIndexOf('.');
-                            if (pointIndex != -1) {
-                                String ext = filesInDir[i].getName().substring(pointIndex + 1);
-                                if (exts.stream().anyMatch((s) -> s.equals(ext))) {
-                                    zipStream.putNextEntry(new ZipEntry(entryName));
-                                    FileInputStream fis = new FileInputStream(filesInDir[i]);
-                                    byte[] buffer = new byte[fis.available()];
-                                    fis.read(buffer);
-                                    zipStream.write(buffer);
-                                }
-                            }
-                        }
+                        putFileToArchive(dirList, zipStream, filesInDir[i]);
                         zipStream.closeEntry();
                     }
                 }
@@ -131,4 +98,65 @@ public class Archive {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Метод выполняет инициализацию параметров объекта по входным параметрам.
+     *
+     * @param args Список входных параметров.
+     */
+    private void intParams(String[] args) {
+        int dir = -1;
+        int out = -1;
+        int ex = -1;
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("-d")) {
+                dir = i;
+            }
+            if (args[i].equals("-e")) {
+                ex = i;
+            }
+            if (args[i].equals("-o")) {
+                out = i;
+            }
+        }
+        if (dir != -1) {
+            directory(args[dir + 1]);
+        }
+        if (out != -1) {
+            output(args[out + 1]);
+        }
+        if (ex != -1) {
+            exclude(Arrays.copyOfRange(args, ex + 1, out));
+        }
+    }
+
+    /**
+     * Метод добавляет файл в архив.
+     *
+     * @param dirList   Список проверяемых папок.
+     * @param zipStream Архив.
+     * @param file      Добавляемый файл.
+     * @throws IOException Ошибка ввода-вывода.
+     */
+    private void putFileToArchive(Queue<File> dirList, ZipOutputStream zipStream, File file) throws IOException {
+        String entryName = file.getPath().substring(directory.length() + 1);
+        if (file.isDirectory()) {
+            zipStream.putNextEntry(new ZipEntry(entryName + File.separator));
+            dirList.offer(file);
+        } else {
+            int pointIndex = file.getName().lastIndexOf('.');
+            if (pointIndex != -1) {
+                String ext = file.getName().substring(pointIndex + 1);
+                if (exts.stream().anyMatch((s) -> s.equals(ext))) {
+                    zipStream.putNextEntry(new ZipEntry(entryName));
+                    FileInputStream fis = new FileInputStream(file);
+                    byte[] buffer = new byte[fis.available()];
+                    fis.read(buffer);
+                    zipStream.write(buffer);
+                }
+            }
+        }
+    }
+
+
 }

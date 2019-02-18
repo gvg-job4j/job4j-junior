@@ -13,12 +13,11 @@ import org.junit.Test;
 public class ArchiveTest {
 
     private File parentDir;
-    private int number;
 
     @Before
     public void createFileStructure() {
         String mainParent = System.getProperty("java.io.tmpdir");
-        number = 5;
+        int number = 5;
         parentDir = new File(mainParent + File.separator + "java_archive");
         if (!parentDir.exists()) {
             parentDir.mkdir();
@@ -50,10 +49,9 @@ public class ArchiveTest {
 
     @Test
     public void createArchiveFromFolder() {
-        String mainParent = System.getProperty("java.io.tmpdir");
         String dir = parentDir.getPath();
         String name1 = "java.xml";
         String[] params = new String[]{"-d", dir, "-e", name1, "-o", "project.zip"};
-        new Archive(params);
+        new Archive(params).createArchive();
     }
 }
