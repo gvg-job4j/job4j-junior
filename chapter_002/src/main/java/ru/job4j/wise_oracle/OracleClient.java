@@ -14,10 +14,6 @@ public class OracleClient {
      * Сокет для подключения.
      */
     private Socket socket;
-    /**
-     * Последнее полученное сообщение от сервера.
-     */
-    private String response;
 
     /**
      * Конструктор, инициализирует сокет для работы клиента.
@@ -41,15 +37,6 @@ public class OracleClient {
     }
 
     /**
-     * Метод возвращает последнее полученное сообщение.
-     *
-     * @return Псоледнее сообщение.
-     */
-    public String getResponse() {
-        return response;
-    }
-
-    /**
      * Метод запускает клиент, получающий сообщения из указанного потока ввода.
      *
      * @param input поток ввода данных.
@@ -59,24 +46,30 @@ public class OracleClient {
             PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             Scanner console = new Scanner(input);
-            String request = null;
-            String serverResponse = null;
+            String request = "";
             out.println("Hello");
+            System.out.println("Hello");
             do {
-                while (!(response = in.readLine()).isEmpty()) {
-                    System.out.println(response);
-                }
+                printServerAnswer(in);
                 request = console.nextLine();
                 out.println(request);
-                if ("exit".equals(request)) {
-                    while (!(serverResponse = in.readLine()).isEmpty()) {
-                        this.response = serverResponse;
-                        System.out.println(serverResponse);
-                    }
-                }
             } while (!"exit".equals(request));
+            printServerAnswer(in);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Метод выводит на экран сообщения сервера.
+     *
+     * @param in Входящий поток сокета.
+     * @throws IOException Если возникает ошибка ввода-вывода.
+     */
+    private void printServerAnswer(BufferedReader in) throws IOException {
+        String serverResponse = null;
+        while (!(serverResponse = in.readLine()).isEmpty()) {
+            System.out.println(serverResponse);
         }
     }
 }
