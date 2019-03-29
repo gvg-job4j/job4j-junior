@@ -1,4 +1,4 @@
-package ru.job4j.wise_oracle;
+package ru.job4j.wiseoracle;
 
 import org.junit.Test;
 
@@ -29,8 +29,8 @@ public class OracleClientTest {
     public void whenAskAnyThenAnswerBack() throws IOException {
         testClient(
                 String.format("I ask you about any%sexit", LN),
-                String.format("Hello, dear friend, I'm a oracle.%s%s" +
-                        "You say: I ask you about any%s%sBye!%s%s", LN, LN, LN, LN, LN, LN),
+                String.format("Hello, dear friend, I'm a oracle.%s%s"
+                        + "You say: I ask you about any%s%sBye!%s%s", LN, LN, LN, LN, LN, LN),
                 String.format("Hello%sI ask you about any%sexit%s", LN, LN, LN));
     }
 
@@ -43,8 +43,8 @@ public class OracleClientTest {
     public void whenAskAnyWithoutExitThenException() throws IOException {
         testClient(
                 "I ask you about any",
-                String.format("Hello, dear friend, I'm a oracle.%s%s" +
-                        "You say: I ask you about any%s%s", LN, LN, LN, LN),
+                String.format("Hello, dear friend, I'm a oracle.%s%s"
+                        + "You say: I ask you about any%s%s", LN, LN, LN, LN),
                 String.format("Hello%sI ask you about any%s", LN, LN));
     }
 

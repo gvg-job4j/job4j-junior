@@ -1,4 +1,4 @@
-package ru.job4j.IO;
+package ru.job4j.io;
 
 import java.io.*;
 import java.util.*;

@@ -1,4 +1,4 @@
-package ru.job4j.thread_problem;
+package ru.job4j.threadproblem;
 
 public class PingPong {
 

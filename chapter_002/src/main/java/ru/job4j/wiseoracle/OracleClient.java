@@ -1,4 +1,4 @@
-package ru.job4j.wise_oracle;
+package ru.job4j.wiseoracle;
 
 import java.io.*;
 import java.net.InetAddress;

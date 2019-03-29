@@ -1,7 +1,8 @@
-package ru.job4j.JDBC;
+package ru.job4j.jdbc;
 
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
+
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -11,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 public class LogTest {
 
     @Test
-    public void teslLogger(){
+    public void teslLogger() {
         SQLStorage storage = new SQLStorage();
         Logger log = storage.getLog();
         log.trace("trace message");
