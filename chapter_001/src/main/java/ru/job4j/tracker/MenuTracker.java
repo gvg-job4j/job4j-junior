@@ -17,7 +17,7 @@ public class MenuTracker {
     /**
      * Система учета заявок.
      */
-    private Tracker tracker;
+    private ITracker tracker;
 
     /**
      * Действия пользователя.
@@ -27,7 +27,7 @@ public class MenuTracker {
     /**
      * Конструктор, инициализирует поля класса.
      */
-    public MenuTracker(Input input, Tracker tracker) {
+    public MenuTracker(Input input, ITracker tracker) {
         this.input = input;
         this.tracker = tracker;
     }
@@ -94,7 +94,7 @@ public class MenuTracker {
          * @param tracker Система заявок.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             String name = input.ask("Enter the task's name:");
             String desc = input.ask("Enter the task's description :");
             Item item = tracker.add(new Item(name, desc));
@@ -132,7 +132,7 @@ public class MenuTracker {
          * @param tracker Система заявок.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             List<Item> items = tracker.findAll();
             if (items != null) {
                 for (Item item : tracker.findAll()
@@ -175,7 +175,7 @@ public class MenuTracker {
          * @param tracker Система заявок.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             String id = input.ask("Enter the task's id:");
             Item item = tracker.findById(id);
             if (item != null) {
@@ -217,7 +217,7 @@ public class MenuTracker {
          * @param tracker Система заявок.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             String id = input.ask("Enter the task's id:");
             Item item = tracker.findById(id);
             if (item != null) {
@@ -258,7 +258,7 @@ public class MenuTracker {
          * @param tracker Система заявок.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             System.out.println("Выход из программы...");
         }
 
@@ -294,7 +294,7 @@ class EditItem implements UserAction {
      * @param tracker Система заявок.
      */
     @Override
-    public void execute(Input input, Tracker tracker) {
+    public void execute(Input input, ITracker tracker) {
         String id = input.ask("Enter the task's id:");
         Item item = tracker.findById(id);
         if (item != null) {
@@ -339,7 +339,7 @@ class FindItemsByName implements UserAction {
      * @param tracker Система заявок.
      */
     @Override
-    public void execute(Input input, Tracker tracker) {
+    public void execute(Input input, ITracker tracker) {
         String name = input.ask("Enter the task's name:");
         List<Item> items = tracker.findByName(name);
         if (items != null) {

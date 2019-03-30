@@ -8,7 +8,7 @@ import java.util.List;
  * @author Valeriy Gyrievskikh
  * @since 19.06.2018.
  */
-public class Tracker {
+public class Tracker implements ITracker {
     /**
      * Список для хранения заявок.
      */
@@ -82,7 +82,7 @@ public class Tracker {
      */
     public List<Item> findAll() {
         return new TrackerSearcherByString().findBy(null, items, position, (string, list, pointer) -> {
-        ArrayList<Item> itemsList = null;
+            ArrayList<Item> itemsList = null;
             if (pointer != 0) {
                 itemsList = (ArrayList<Item>) list;
                 itemsList.trimToSize();
