@@ -36,7 +36,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
-        return this.connection != null;
+        return this.connection != null && initTables();
     }
 
     /**
@@ -46,19 +46,17 @@ public class TrackerSQL implements ITracker, AutoCloseable {
      */
     @Override
     public Item add(Item item) {
-        Item newItem = item;
+        Item newItem = null;
         String sqlText = "INSERT INTO requests (name, request_id, user_id, category_id, status_id)"
                 + "VALUES(?, ?, 1, 1, 1)";
-        if (init() && initTables()) {
-            try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
-                statement.setString(1, newItem.getName());
-                statement.setString(2, Long.toString(newItem.getNumber()));
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } else {
-            newItem = null;
+        try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
+            statement.setString(1, item.getName());
+            statement.setString(2, Long.toString(item.getNumber()));
+            statement.executeUpdate();
+            newItem = item;
+            newItem.setId(Long.toString(item.getNumber()));
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return newItem;
     }
@@ -72,14 +70,12 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     @Override
     public void replace(String id, Item item) {
         String sqlText = "UPDATE requests SET name = ? where request_id = ?";
-        if (init() && initTables()) {
-            try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
-                statement.setString(1, item.getName());
-                statement.setString(2, id);
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
+            statement.setString(1, item.getName());
+            statement.setString(2, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -91,13 +87,11 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     @Override
     public void delete(String id) {
         String sqlText = "DELETE FROM requests WHERE request_id = ?";
-        if (init() && initTables()) {
-            try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
-                statement.setString(1, id);
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
+            statement.setString(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -110,17 +104,15 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     public List<Item> findAll() {
         String sqlText = "SELECT * FROM requests";
         List<Item> requests = new ArrayList<>();
-        if (init() && initTables()) {
-            try (Statement statement = this.connection.createStatement()) {
-                ResultSet rs = statement.executeQuery(sqlText);
-                while (rs.next()) {
-                    Item item = new Item(rs.getString(2), "", rs.getInt(1));
-                    item.setId(rs.getString(3));
-                    requests.add(item);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        try (Statement statement = this.connection.createStatement()) {
+            ResultSet rs = statement.executeQuery(sqlText);
+            while (rs.next()) {
+                Item item = new Item(rs.getString("name"), "", rs.getInt("id"));
+                item.setId(rs.getString("request_id"));
+                requests.add(item);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return requests.size() == 0 ? null : requests;
     }
@@ -135,18 +127,16 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     public List<Item> findByName(String key) {
         String sqlText = "SELECT * FROM requests WHERE name = ?";
         List<Item> requests = new ArrayList<>();
-        if (init() && initTables()) {
-            try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
-                statement.setString(1, key);
-                ResultSet rs = statement.executeQuery();
-                while (rs.next()) {
-                    Item item = new Item(rs.getString(2), "", rs.getInt(1));
-                    item.setId(rs.getString(3));
-                    requests.add(item);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
+            statement.setString(1, key);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Item item = new Item(rs.getString("name"), "", rs.getInt("id"));
+                item.setId(rs.getString("request_id"));
+                requests.add(item);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return requests.size() == 0 ? null : requests;
     }
@@ -161,16 +151,15 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     public Item findById(String id) {
         String sqlText = "SELECT * FROM requests WHERE request_id = ?";
         Item item = null;
-        if (init() && initTables()) {
-            try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
-                statement.setString(1, id);
-                ResultSet rs = statement.executeQuery();
-                if (rs.next()) {
-                    item = new Item(rs.getString(2), "", rs.getInt(1));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
+            statement.setString(1, id);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                item = new Item(rs.getString("name"), "", rs.getInt("id"));
+                item.setId(rs.getString("request_id"));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return item;
     }
@@ -180,7 +169,9 @@ public class TrackerSQL implements ITracker, AutoCloseable {
      */
     @Override
     public void close() throws Exception {
-        connection.close();
+        if (connection != null) {
+            connection.close();
+        }
     }
 
     /**
@@ -189,12 +180,14 @@ public class TrackerSQL implements ITracker, AutoCloseable {
      * @return Результат проверки (false - если в процессе проверки возникали ошибки, иначе true).
      */
     public boolean initTables() {
-        boolean verify = true;
-        try (Statement statement = this.connection.createStatement()) {
-            verifyTables(statement);
-        } catch (SQLException e) {
-            verify = false;
-            e.printStackTrace();
+        boolean verify = false;
+        if (this.connection != null) {
+            try (Statement statement = this.connection.createStatement()) {
+                verifyTables(statement);
+                verify = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return verify;
     }

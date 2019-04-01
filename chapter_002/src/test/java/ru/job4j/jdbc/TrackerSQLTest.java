@@ -1,6 +1,7 @@
 package ru.job4j.jdbc;
 
 import org.hamcrest.core.Is;
+import org.junit.Before;
 import org.junit.Test;
 import ru.job4j.tracker.Item;
 import ru.job4j.tracker.Tracker;
@@ -15,6 +16,21 @@ import static org.hamcrest.Matchers.is;
  * @since 30.03.2019
  */
 public class TrackerSQLTest {
+
+    private TrackerSQL tracker;
+
+    @Before
+    public void initTracker() {
+        tracker = new TrackerSQL();
+        tracker.init();
+        List<Item> currentRequests = tracker.findAll();
+        if (currentRequests != null) {
+            for (Item item : currentRequests) {
+                tracker.delete(item.getId());
+            }
+        }
+    }
+
     @Test
     public void checkConnection() {
         TrackerSQL sql = new TrackerSQL();
@@ -30,7 +46,6 @@ public class TrackerSQLTest {
 
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() {
-        TrackerSQL tracker = new TrackerSQL();
         Item item = new Item("test1", "testDescription", 123L);
         tracker.add(item);
         assertThat(tracker.findAll().get(0).getId(), Is.is(item.getId()));
@@ -38,7 +53,6 @@ public class TrackerSQLTest {
 
     @Test
     public void whenReplaceNameThenReturnNewName() {
-        TrackerSQL tracker = new TrackerSQL();
         Item previous = new Item("test1", "testDescription", 123L);
         tracker.add(previous);
         previous.setId(Long.toString(previous.getNumber()));
@@ -50,7 +64,6 @@ public class TrackerSQLTest {
 
     @Test
     public void whenDeleteItemThenReturnNull() {
-        TrackerSQL tracker = new TrackerSQL();
         Item newItem1 = new Item("test1", "testDescription", 123L);
         Item newItem2 = new Item("test2", "testDescription", 1234L);
         Item newItem3 = new Item("test3", "testDescription", 12345L);
@@ -66,11 +79,6 @@ public class TrackerSQLTest {
 
     @Test
     public void whenFindAllThenReturnArray() {
-        TrackerSQL tracker = new TrackerSQL();
-        List<Item> currentRequests = tracker.findAll();
-        for (Item item : currentRequests) {
-            tracker.delete(item.getId());
-        }
         Item newItem = new Item("test1", "testDescription", 123L);
         tracker.add(newItem);
         assertThat(tracker.findAll().size(), Is.is(1));
@@ -78,11 +86,6 @@ public class TrackerSQLTest {
 
     @Test
     public void whenFindByNameThenReturnArrayLength() {
-        TrackerSQL tracker = new TrackerSQL();
-        List<Item> currentRequests = tracker.findAll();
-        for (Item item : currentRequests) {
-            tracker.delete(item.getId());
-        }
         Item newItem1 = new Item("test1", "testDescription", 123L);
         Item newItem2 = new Item("test1", "testDescription", 1234L);
         Item newItem3 = new Item("test3", "testDescription", 123L);
@@ -94,7 +97,6 @@ public class TrackerSQLTest {
 
     @Test
     public void whenFindByIdThenReturnItem() {
-        Tracker tracker = new Tracker();
         Item newItem = new Item("test1", "testDescription", 123L);
         tracker.add(newItem);
         assertThat(tracker.findById(newItem.getId()).getId(), Is.is(newItem.getId()));
