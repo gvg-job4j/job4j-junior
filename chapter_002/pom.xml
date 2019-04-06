@@ -57,10 +57,6 @@
                 <configuration>
                     <propertyFile>${basedir}/src/main/resources/liquibase.properties</propertyFile>
                     <changeLogFile>${basedir}/db/master.xml</changeLogFile>
-                    <!--<url>${db.url}</url>-->
-                    <!--<driver>${db.driver}</driver>-->
-                    <!--<username>${db.username}</username>-->
-                    <!--<password>${db.password}</password>-->
                 </configuration>
                 <executions>
                     <execution>

@@ -51,18 +51,17 @@ public class SearchTest {
             }
         }
     }
+    @Test
+    public void whenGetFileListWithFourExtFromParent() {
+        List<File> files = searchFiles.files(parentDir.getPath(), Arrays.asList("txt", "ddd", "pdf", "rtf"));
+        assertThat(files.size(), is(number * 4));
+    }
 
-//    @Test
-//    public void whenGetFileListWithFourExtFromParent() {
-//        List<File> files = searchFiles.files(parentDir.getPath(), Arrays.asList("txt", "ddd", "pdf", "rtf"));
-//        assertThat(files.size(), is(number * 4));
-//    }
-//
-//    @Test
-//    public void whenGetFileListWithTwoExtFromParent() {
-//        List<File> files = searchFiles.files(parentDir.getPath(), Arrays.asList("txt", "ddd"));
-//        assertThat(files.size(), is(number * 2));
-//    }
+    @Test
+    public void whenGetFileListWithTwoExtFromParent() {
+        List<File> files = searchFiles.files(parentDir.getPath(), Arrays.asList("txt", "ddd"));
+        assertThat(files.size(), is(number * 2));
+    }
 
     @Test
     public void whenGetFileListWithNoExtFromParent() {
