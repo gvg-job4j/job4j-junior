@@ -7,7 +7,8 @@ sudo: false
 #script: mvn clean verify
 
 env:
-  - CODECOV_TOKEN="1d3c3061-e15d-4bb7-a14f-54d633c24484"
+  global:
+    - CODECOV_TOKEN="1d3c3061-e15d-4bb7-a14f-54d633c24484"
 
 services:
   - postgresql
