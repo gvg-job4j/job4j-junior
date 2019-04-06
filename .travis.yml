@@ -9,8 +9,12 @@ sudo: false
 env:
   - CODECOV_TOKEN="1d3c3061-e15d-4bb7-a14f-54d633c24484"
 
-#services:
-#-postgresql
+services:
+  - postgresql
+
+before_script:
+  - psql -c 'create database requests;' -U postgres
+
 #
 #before install:
 #-psql -c 'create database requests;' -U postgres
