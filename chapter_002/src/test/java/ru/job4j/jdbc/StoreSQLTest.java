@@ -84,11 +84,11 @@ public class StoreSQLTest {
         }
     }
 
-//    @Test
-//    public void parserTest() {
-//        File dest = new File("G:\\projects\\job4j-junior\\chapter_002\\destXML_test.xml");
-//        ParserSAX parser = new ParserSAX();
-//        parser.parseFile(dest);
-//        assertThat(parser.getSum(), is(55));
-//    }
+    @Test
+    public void parserTest() {
+        File dest = new File("destXML_test.xml");
+        ParserSAX parser = new ParserSAX();
+        parser.parseFile(dest);
+        assertThat(parser.getSum(), is(55));
+    }
 }
