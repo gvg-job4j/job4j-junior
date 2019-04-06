@@ -10,10 +10,11 @@ env:
   global:
     - CODECOV_TOKEN="1d3c3061-e15d-4bb7-a14f-54d633c24484"
 
-#services:
-#  - postgresql
-#
-#before_script:
+services:
+  - postgresql
+
+before_script:
+  - psql -c 'create database tracker;' -U postgres
 #  - psql -c 'create database requests;' -U postgres
 
 # после выполнения сборки запустить скрипт, который будет собирать статистику по JaCoCo
