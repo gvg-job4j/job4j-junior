@@ -16,6 +16,8 @@ services:
 before_script:
   - psql -c 'create database requests;' -U postgres
 
+script: "mvn cobertura:cobertura"
+
 # после выполнения сборки запустить скрипт, который будет собирать статистику по JaCoCo
 # Здесь используется сторонни сервис https://codecov.io/
 after_success:
