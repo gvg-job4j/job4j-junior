@@ -14,8 +14,9 @@ services:
   - postgresql
 
 before_script:
-  - cp config/database.yml.travis config/database.yml
-  - psql -c 'create database requests;' -U postgres
+#  - cp config/database.yml.travis config/database.yml
+#  - psql -c 'create database requests;' -U postgres
+  - psql -c 'create database tracker;' -U postgres
 
 #before_install:
 #- psql -c 'create database tracker;' -U postgres
