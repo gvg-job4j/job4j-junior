@@ -13,11 +13,11 @@ env:
 services:
   - postgresql
 
-#before_script:
-#  - psql -c 'create database requests;' -U postgres
+before_script:
+  - psql -c 'create database requests;' -U postgres
 
-before_install:
-- psql -c 'create database tracker;' -U postgres
+#before_install:
+#- psql -c 'create database tracker;' -U postgres
 
 script: "mvn cobertura:cobertura"
 
