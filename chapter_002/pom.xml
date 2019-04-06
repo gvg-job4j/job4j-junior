@@ -47,7 +47,7 @@
                         <format>html</format>
                         <format>xml</format>
                     </formats>
-                    <check />
+                    <check/>
                 </configuration>
             </plugin>
             <plugin>
@@ -55,15 +55,14 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>3.6.2</version>
                 <configuration>
-                    <propertyFile>${basedir}/src/main/resources/liquibase.properties</propertyFile>
+                    <propertyFile>/src/main/resources/liquibase.properties</propertyFile>
                     <changeLogFile>${basedir}/db/master.xml</changeLogFile>
                 </configuration>
                 <executions>
                     <execution>
                         <phase>process-resources</phase>
                         <goals>
-                            <!--<goal>update</goal>-->
-                            <!--<goal>status</goal>-->
+                            <goal>update</goal>
                         </goals>
                     </execution>
                 </executions>
