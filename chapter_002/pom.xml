@@ -60,8 +60,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <!--<phase>process-resources</phase>-->
-                        <phase>process-test-resources</phase>
+                        <phase>process-resources</phase>
                         <goals>
                             <goal>update</goal>
                         </goals>
