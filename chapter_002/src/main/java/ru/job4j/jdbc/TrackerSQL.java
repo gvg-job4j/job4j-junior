@@ -20,6 +20,21 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     private Connection connection;
 
     /**
+     * Конструктор с входящим подключением.
+     *
+     * @param connection Установленное подключение.
+     */
+    public TrackerSQL(Connection connection) {
+        this.connection = connection;
+    }
+
+    /**
+     * Конструктор.
+     */
+    public TrackerSQL() {
+    }
+
+    /**
      * Метод создает подключение к базе данных с указанными настройками.
      *
      * @return Результат подключения (true - подключение создано, false - не создано).
