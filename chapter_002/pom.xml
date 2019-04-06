@@ -57,14 +57,11 @@
                 <configuration>
                     <propertyFile>/src/main/resources/liquibase.properties</propertyFile>
                     <changeLogFile>${basedir}/db/master.xml</changeLogFile>
-                    <!--<url>${db.url}</url>-->
-                    <!--<username>${db.username}</username>-->
-                    <!--<password>${db.password}</password>-->
-                    <!--<driver>${db.driver}</driver>-->
                 </configuration>
                 <executions>
                     <execution>
                         <!--<phase>process-resources</phase>-->
+                        <phase>process-test-resources</phase>
                         <goals>
                             <goal>update</goal>
                         </goals>

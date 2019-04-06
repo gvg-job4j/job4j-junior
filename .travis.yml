@@ -16,12 +16,8 @@ services:
 before_script:
 #  - cp config/database.yml.travis config/database.yml
   - psql -c 'create database requests;' -U postgres
-#  - psql -c 'create database tracker;' -U postgres
 
-#before_install:
-#- psql -c 'create database tracker;' -U postgres
-
-script: "mvn cobertura:cobertura"
+#script: "mvn cobertura:cobertura"
 
 # после выполнения сборки запустить скрипт, который будет собирать статистику по JaCoCo
 # Здесь используется сторонни сервис https://codecov.io/
