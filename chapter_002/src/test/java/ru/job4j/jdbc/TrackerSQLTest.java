@@ -34,28 +34,28 @@ public class TrackerSQLTest {
         }
     }
 
-//    private Connection init() {
-//        try (InputStream in = TrackerSQL.class.getClassLoader().getResourceAsStream("app.properties")) {
-//            Properties config = new Properties();
-//            config.load(in);
-//            Class.forName(config.getProperty("driver-class-name"));
-//            return DriverManager.getConnection(
-//                    config.getProperty("url"),
-//                    config.getProperty("username"),
-//                    config.getProperty("password")
-//
-//            );
-//        } catch (Exception e) {
-//            throw new IllegalStateException(e);
-//        }
-//    }
+    private Connection init() {
+        try (InputStream in = TrackerSQL.class.getClassLoader().getResourceAsStream("app.properties")) {
+            Properties config = new Properties();
+            config.load(in);
+            Class.forName(config.getProperty("driver-class-name"));
+            return DriverManager.getConnection(
+                    config.getProperty("url"),
+                    config.getProperty("username"),
+                    config.getProperty("password")
+
+            );
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
 
     @Test
     public void createItem() throws Exception {
-//        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
+        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
             tracker.add(new Item("name", "testDescription", 123L));
             assertThat(tracker.findByName("name").size(), is(1));
-//        }
+        }
     }
 
     @Test
