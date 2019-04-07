@@ -25,20 +25,25 @@ public class SearchTest {
     @Before
     public void setFileStructure() {
         String mainParent = System.getProperty("java.io.tmpdir");
-        parentDir = new File(mainParent + "\\java_search");
+        parentDir = new File(mainParent + File.separator + "java_search");
         if (!parentDir.exists()) {
             parentDir.mkdir();
         }
         if (parentDir.exists()) {
             for (int i = 0; i < number; i++) {
-                File folder = new File(parentDir.getPath() + "\\" + Integer.toString(i));
+                File folder = new File(parentDir.getPath()
+                        + File.separator + Integer.toString(i));
                 if (!folder.exists()) {
                     folder.mkdir();
                 }
-                File fileTxt = new File(folder.getPath() + "\\" + Integer.toString(i) + ".txt");
-                File filePdf = new File(folder.getPath() + "\\" + Integer.toString(i) + ".pdf");
-                File fileRtf = new File(folder.getPath() + "\\" + Integer.toString(i) + ".rtf");
-                File fileDdd = new File(folder.getPath() + "\\" + Integer.toString(i) + ".ddd");
+                File fileTxt = new File(folder.getPath()
+                        + File.separator + Integer.toString(i) + ".txt");
+                File filePdf = new File(folder.getPath()
+                        + File.separator + Integer.toString(i) + ".pdf");
+                File fileRtf = new File(folder.getPath()
+                        + File.separator + Integer.toString(i) + ".rtf");
+                File fileDdd = new File(folder.getPath()
+                        + File.separator + Integer.toString(i) + ".ddd");
                 try {
                     fileTxt.createNewFile();
                     filePdf.createNewFile();
@@ -50,6 +55,7 @@ public class SearchTest {
             }
         }
     }
+
     @Test
     public void whenGetFileListWithFourExtFromParent() {
         List<File> files = searchFiles.files(parentDir.getPath(), Arrays.asList("txt", "ddd", "pdf", "rtf"));
