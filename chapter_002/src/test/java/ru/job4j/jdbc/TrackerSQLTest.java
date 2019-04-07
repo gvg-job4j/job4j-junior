@@ -20,19 +20,19 @@ import static org.hamcrest.Matchers.is;
  */
 public class TrackerSQLTest {
 
-//    private TrackerSQL tracker;
-//
-//    @Before
-//    public void initTracker() {
-//        tracker = new TrackerSQL();
-//        tracker.init();
-//        List<Item> currentRequests = tracker.findAll();
-//        if (currentRequests != null) {
-//            for (Item item : currentRequests) {
-//                tracker.delete(item.getId());
-//            }
-//        }
-//    }
+    private TrackerSQL tracker;
+
+    @Before
+    public void initTracker() {
+        tracker = new TrackerSQL();
+        tracker.init();
+        List<Item> currentRequests = tracker.findAll();
+        if (currentRequests != null) {
+            for (Item item : currentRequests) {
+                tracker.delete(item.getId());
+            }
+        }
+    }
 
     private Connection init() {
         try (InputStream in = TrackerSQL.class.getClassLoader().getResourceAsStream("app.properties")) {
