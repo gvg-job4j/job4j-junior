@@ -20,19 +20,19 @@ import static org.hamcrest.Matchers.is;
  */
 public class TrackerSQLTest {
 
-    private TrackerSQL tracker;
-
-    @Before
-    public void initTracker() {
-        tracker = new TrackerSQL();
-        tracker.init();
-        List<Item> currentRequests = tracker.findAll();
-        if (currentRequests != null) {
-            for (Item item : currentRequests) {
-                tracker.delete(item.getId());
-            }
-        }
-    }
+//    private TrackerSQL tracker;
+//
+//    @Before
+//    public void initTracker() {
+//        tracker = new TrackerSQL();
+//        tracker.init();
+//        List<Item> currentRequests = tracker.findAll();
+//        if (currentRequests != null) {
+//            for (Item item : currentRequests) {
+//                tracker.delete(item.getId());
+//            }
+//        }
+//    }
 
     private Connection init() {
         try (InputStream in = TrackerSQL.class.getClassLoader().getResourceAsStream("app.properties")) {
@@ -73,16 +73,16 @@ public class TrackerSQLTest {
 
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() throws Exception {
-//        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
+        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
             Item item = new Item("test1", "testDescription", 123L);
             tracker.add(item);
             assertThat(tracker.findAll().get(0).getId(), Is.is(item.getId()));
-//        }
+        }
     }
 
     @Test
     public void whenReplaceNameThenReturnNewName() throws Exception {
-//        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
+        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
             Item previous = new Item("test1", "testDescription", 123L);
             tracker.add(previous);
             previous.setId(Long.toString(previous.getNumber()));
@@ -90,12 +90,12 @@ public class TrackerSQLTest {
             next.setId(Long.toString(next.getNumber()));
             tracker.replace(previous.getId(), next);
             assertThat(tracker.findById(previous.getId()).getName(), Is.is("test2"));
-//        }
+        }
     }
 
     @Test
     public void whenDeleteItemThenReturnNull() throws Exception {
-//        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
+        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
             Item newItem1 = new Item("test1", "testDescription", 123L);
             Item newItem2 = new Item("test2", "testDescription", 1234L);
             Item newItem3 = new Item("test3", "testDescription", 12345L);
@@ -107,21 +107,21 @@ public class TrackerSQLTest {
             tracker.add(newItem3);
             tracker.delete(newItem1.getId());
             assertNull(tracker.findById(newItem1.getId()));
-//        }
+        }
     }
 
     @Test
     public void whenFindAllThenReturnArray() throws Exception {
-//        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
+        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
             Item newItem = new Item("test1", "testDescription", 123L);
             tracker.add(newItem);
             assertThat(tracker.findAll().size(), Is.is(1));
-//        }
+        }
     }
 
     @Test
     public void whenFindByNameThenReturnArrayLength() throws Exception {
-//        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
+        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
             Item newItem1 = new Item("test1", "testDescription", 123L);
             Item newItem2 = new Item("test1", "testDescription", 1234L);
             Item newItem3 = new Item("test3", "testDescription", 123L);
@@ -129,15 +129,15 @@ public class TrackerSQLTest {
             tracker.add(newItem2);
             tracker.add(newItem3);
             assertThat(tracker.findByName("test1").size(), Is.is(2));
-//        }
+        }
     }
 
     @Test
     public void whenFindByIdThenReturnItem() throws Exception {
-//        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
+        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
             Item newItem = new Item("test1", "testDescription", 123L);
             tracker.add(newItem);
             assertThat(tracker.findById(newItem.getId()).getId(), Is.is(newItem.getId()));
-//        }
+        }
     }
 }
