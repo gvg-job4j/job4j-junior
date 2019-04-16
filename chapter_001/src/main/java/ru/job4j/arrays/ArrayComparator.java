@@ -1,8 +1,6 @@
 package ru.job4j.arrays;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * @author Valeriy Gyrievskikh
@@ -20,19 +18,28 @@ public class ArrayComparator {
     public boolean compare(Object[] array1, Object[] array2) {
         boolean isSame = false;
         if (array1.length == array2.length) {
-            ArrayList<Object> compareList = new ArrayList<>();
-            Collections.addAll(compareList, array2);
-            compareList.trimToSize();
-            for (int i = 0; i < array1.length; i++) {
-                for (int j = 0; j < compareList.size(); j++) {
-                    if (array1[i].equals(compareList.get(j))) {
-                        compareList.remove(j);
-                        break;
-                    }
-                }
-            }
-            isSame = (compareList.size() == 0);
+            HashMap<Object, Integer> map1 = makeMapFromArray(array1);
+            HashMap<Object, Integer> map2 = makeMapFromArray(array2);
+            isSame = map1.equals(map2);
         }
         return isSame;
+    }
+
+    /**
+     * Метод создает объект HashMap на основаннии данных массива.
+     *
+     * @param array Массив для заполнения HashMap.
+     * @return Полученный HashMap.
+     */
+    private HashMap<Object, Integer> makeMapFromArray(Object[] array) {
+        HashMap<Object, Integer> map = new HashMap<>();
+        for (int i = 0; i < array.length; i++) {
+            Integer value = 1;
+            if (map.containsKey(array[i])) {
+                value = map.get(array[i]) + 1;
+            }
+            map.put(array[i], value);
+        }
+        return map;
     }
 }

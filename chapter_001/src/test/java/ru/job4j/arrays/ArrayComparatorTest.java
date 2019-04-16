@@ -13,7 +13,7 @@ public class ArrayComparatorTest {
     @Test
     public void whenContentOfTwoStringArraysEqualsThenTrue() {
         ArrayComparator comparator = new ArrayComparator();
-        assertTrue(comparator.compare(new String[]{"m", "a", "m", "a"}, new String[]{"a", "m", "a", "m"}));
+        assertTrue(comparator.compare(new String[]{"n", "m", "a", "m", "a"}, new String[]{"a", "m", "a", "m", "n"}));
     }
 
     @Test
