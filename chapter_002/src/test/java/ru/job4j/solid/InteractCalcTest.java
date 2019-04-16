@@ -127,7 +127,7 @@ public class InteractCalcTest {
 
     @Test
     public void whenGetLogNThen1() {
-        String input = String.format("1%s10%s1%s2,72%s0", LN, LN, LN, LN);
+        String input = String.format("1%s10%s1%s3%s0", LN, LN, LN, LN);
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         InteractCalc calc = new InteractCalc(in);
         calc.calcStart();
