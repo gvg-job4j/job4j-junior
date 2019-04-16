@@ -1,5 +1,7 @@
 package ru.job4j.jdbc;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import ru.job4j.jdbc.datamanipulate.*;
 
@@ -18,15 +20,29 @@ import static org.hamcrest.core.Is.is;
  */
 public class StoreSQLTest {
 
+    StoreSQL store;
+
+    @Before
+    public void createStore() {
+        store = new StoreSQL(new Config());
+    }
+
+    @After
+    public void closeStore() {
+        try {
+            store.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Test
     public void whenConnectToSqliteThenTrue() {
-        StoreSQL store = new StoreSQL(new Config());
         assertNotNull(store.getConnect());
     }
 
     @Test
     public void whenGenerateTenThenGetListSizeTen() {
-        StoreSQL store = new StoreSQL(new Config());
         store.generate(10);
         List<Entry> list = store.load();
         assertThat(list.size(), is(10));
@@ -34,7 +50,6 @@ public class StoreSQLTest {
 
     @Test
     public void whenSaveToFileThenFileExists() {
-        StoreSQL store = new StoreSQL(new Config());
         store.generate(10);
         List<Entry> list = store.load();
         File source = new File("G:\\projects\\job4j-junior\\chapter_002\\StoreXML.xml");
@@ -45,7 +60,6 @@ public class StoreSQLTest {
 
     @Test
     public void whenParseFileThenSum() {
-        StoreSQL store = new StoreSQL(new Config());
 //        store.generate(1_000_000); //Выполняется 12 сек. С использованием Batch - 8 сек.
         store.generate(10);
         List<Entry> list = store.load();

@@ -26,8 +26,8 @@ public class StoreSQL implements AutoCloseable {
     public StoreSQL(Config config) {
         this.config = config;
         config.init();
-        try (Connection conn = DriverManager.getConnection(config.get("url"))) {
-            this.connect = conn;
+        try {
+            this.connect = DriverManager.getConnection(config.get("url"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -48,28 +48,26 @@ public class StoreSQL implements AutoCloseable {
      * @param size Количество записей в таблице.
      */
     public void generate(int size) {
-        try (Connection conn = DriverManager.getConnection(config.get("url"))) {
-            if (conn != null) {
-                try (Statement statement = conn.createStatement()) {
-                    statement.executeUpdate("CREATE TABLE IF NOT EXISTS entry(field integer);");
-                    statement.executeUpdate("DELETE FROM entry;");
-                    try (PreparedStatement prepStmt = conn.prepareStatement(
-                            "INSERT INTO entry (field) VALUES(?)")) {
-                        conn.setAutoCommit(false);
-                        for (int i = 1; i <= size; i++) {
-                            prepStmt.setInt(1, i);
-                            prepStmt.addBatch();
-                        }
-                        prepStmt.executeBatch();
-                        conn.commit();
-                    } catch (SQLException e) {
-                        conn.rollback();
-                        e.printStackTrace();
+        if (this.connect != null) {
+            try (Statement statement = this.connect.createStatement()) {
+                statement.executeUpdate("CREATE TABLE IF NOT EXISTS entry(field integer);");
+                statement.executeUpdate("DELETE FROM entry;");
+                try (PreparedStatement prepStmt = this.connect.prepareStatement(
+                        "INSERT INTO entry (field) VALUES(?)")) {
+                    this.connect.setAutoCommit(false);
+                    for (int i = 1; i <= size; i++) {
+                        prepStmt.setInt(1, i);
+                        prepStmt.addBatch();
                     }
+                    prepStmt.executeBatch();
+                    this.connect.commit();
+                } catch (SQLException e) {
+                    this.connect.rollback();
+                    e.printStackTrace();
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
@@ -80,19 +78,15 @@ public class StoreSQL implements AutoCloseable {
      */
     public List<Entry> load() {
         List<Entry> values = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(config.get("url"))) {
-            if (conn != null) {
-                try (Statement statement = conn.createStatement()) {
-                    ResultSet rs = statement.executeQuery("SELECT * FROM entry;");
-                    while (rs.next()) {
-                        values.add(new Entry(rs.getInt("field")));
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+        if (this.connect != null) {
+            try (Statement statement = this.connect.createStatement()) {
+                ResultSet rs = statement.executeQuery("SELECT * FROM entry;");
+                while (rs.next()) {
+                    values.add(new Entry(rs.getInt("field")));
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return values;
     }
