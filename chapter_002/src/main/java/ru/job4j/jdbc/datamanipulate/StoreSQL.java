@@ -53,14 +53,19 @@ public class StoreSQL implements AutoCloseable {
                 try (Statement statement = conn.createStatement()) {
                     statement.executeUpdate("CREATE TABLE IF NOT EXISTS entry(field integer);");
                     statement.executeUpdate("DELETE FROM entry;");
-                    conn.setAutoCommit(false);
-                    for (int i = 1; i <= size; i++) {
-                        statement.executeUpdate("INSERT INTO entry (field) VALUES(" + i + ");");
+                    try (PreparedStatement prepStmt = conn.prepareStatement(
+                            "INSERT INTO entry (field) VALUES(?)")) {
+                        conn.setAutoCommit(false);
+                        for (int i = 1; i <= size; i++) {
+                            prepStmt.setInt(1, i);
+                            prepStmt.addBatch();
+                        }
+                        prepStmt.executeBatch();
+                        conn.commit();
+                    } catch (SQLException e) {
+                        conn.rollback();
+                        e.printStackTrace();
                     }
-                    conn.commit();
-                } catch (SQLException e) {
-                    conn.rollback();
-                    e.printStackTrace();
                 }
             }
         } catch (SQLException e) {

@@ -46,7 +46,7 @@ public class StoreSQLTest {
     @Test
     public void whenParseFileThenSum() {
         StoreSQL store = new StoreSQL(new Config());
-//        store.generate(1_000_000); //Выполняется 12 сек.
+//        store.generate(1_000_000); //Выполняется 12 сек. С использованием Batch - 8 сек.
         store.generate(10);
         List<Entry> list = store.load();
         File source = new File("G:\\projects\\job4j-junior\\chapter_002\\StoreXML.xml");
