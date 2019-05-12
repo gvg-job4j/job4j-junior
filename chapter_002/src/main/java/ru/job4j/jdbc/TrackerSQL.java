@@ -262,7 +262,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
                 + "category_id int REFERENCES category(id));";
         statement.executeUpdate(queryRequests);
         String queryComments = "CREATE TABLE IF NOT EXISTS comment(id int primary key,name varchar (100)"
-                + ",request_id int REFERENCES demsnds(id));";
+                + ",request_id int REFERENCES demands(id));";
         statement.executeUpdate(queryComments);
         String queryFiles = "CREATE TABLE IF NOT EXISTS files(id int primary key, name varchar (100)"
                 + ",request_id int REFERENCES demands(id));";
