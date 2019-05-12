@@ -62,7 +62,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     @Override
     public Item add(Item item) {
         Item newItem = null;
-        String sqlText = "INSERT INTO requests (name, request_id, user_id, category_id, status_id)"
+        String sqlText = "INSERT INTO demands (name, request_id, user_id, category_id, status_id)"
                 + "VALUES(?, ?, 1, 1, 1)";
         try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
             statement.setString(1, item.getName());
@@ -84,7 +84,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
      */
     @Override
     public void replace(String id, Item item) {
-        String sqlText = "UPDATE requests SET name = ? where request_id = ?";
+        String sqlText = "UPDATE demands SET name = ? where request_id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
             statement.setString(1, item.getName());
             statement.setString(2, id);
@@ -101,7 +101,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
      */
     @Override
     public void delete(String id) {
-        String sqlText = "DELETE FROM requests WHERE request_id = ?";
+        String sqlText = "DELETE FROM demands WHERE request_id = ?";
         try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
             statement.setString(1, id);
             statement.executeUpdate();
@@ -117,7 +117,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
      */
     @Override
     public List<Item> findAll() {
-        String sqlText = "SELECT * FROM requests";
+        String sqlText = "SELECT * FROM demands";
         List<Item> requests = new ArrayList<>();
         try (Statement statement = this.connection.createStatement()) {
             ResultSet rs = statement.executeQuery(sqlText);
@@ -140,7 +140,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
      */
     @Override
     public List<Item> findByName(String key) {
-        String sqlText = "SELECT * FROM requests WHERE name = ?";
+        String sqlText = "SELECT * FROM demands WHERE name = ?";
         List<Item> requests = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
             statement.setString(1, key);
@@ -164,7 +164,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
      */
     @Override
     public Item findById(String id) {
-        String sqlText = "SELECT * FROM requests WHERE request_id = ?";
+        String sqlText = "SELECT * FROM demands WHERE request_id = ?";
         Item item = null;
         try (PreparedStatement statement = this.connection.prepareStatement(sqlText)) {
             statement.setString(1, id);
@@ -256,16 +256,16 @@ public class TrackerSQL implements ITracker, AutoCloseable {
             statement.executeUpdate("INSERT INTO status (id, name) VALUES(4, 'Returned');");
             statement.executeUpdate("INSERT INTO status (id, name) VALUES(5, 'Closed');");
         }
-        String queryRequests = "CREATE TABLE IF NOT EXISTS requests"
+        String queryRequests = "CREATE TABLE IF NOT EXISTS demands"
                 + "(id SERIAL primary key, name varchar (100), request_id varchar (100),"
                 + "user_id int REFERENCES users(id), status_id int REFERENCES status(id),"
                 + "category_id int REFERENCES category(id));";
         statement.executeUpdate(queryRequests);
         String queryComments = "CREATE TABLE IF NOT EXISTS comment(id int primary key,name varchar (100)"
-                + ",request_id int REFERENCES requests(id));";
+                + ",request_id int REFERENCES demsnds(id));";
         statement.executeUpdate(queryComments);
         String queryFiles = "CREATE TABLE IF NOT EXISTS files(id int primary key, name varchar (100)"
-                + ",request_id int REFERENCES requests(id));";
+                + ",request_id int REFERENCES demands(id));";
         statement.executeUpdate(queryFiles);
     }
 }

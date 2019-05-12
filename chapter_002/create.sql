@@ -28,7 +28,7 @@ CREATE TYPE status AS ENUM(
 'Returned',
 'Closed');
 
-CREATE TABLE requests(
+CREATE TABLE demands(
 id int primary key,
 name varchar (100),
 user_id int REFERENCES users(id),
@@ -38,10 +38,10 @@ status status);
 CREATE TABLE comment(
 id int primary key,
 name varchar (100),
-request_id int REFERENCES requests(id));
+request_id int REFERENCES demands(id));
 
 
 CREATE TABLE files(
 id int primary key,
 name varchar (100),
-request_id int REFERENCES requests(id));
+request_id int REFERENCES demands(id));
