@@ -114,9 +114,9 @@
         </profile>
         <profile>
             <id>travis</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <!--<activation>-->
+                <!--<activeByDefault>true</activeByDefault>-->
+            <!--</activation>-->
             <properties>
                 <db.url>jdbc:postgresql://localhost/requests</db.url>
                 <db.username>postgres</db.username>
