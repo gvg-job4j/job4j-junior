@@ -29,10 +29,10 @@ public class ControlQualityTest {
                 "01.01.2019", 50.00, 10);
         Food bread2 = new Bread("bread 2", "30.05.2022",
                 "01.01.2019", 60.00, 15);
-        Food milk1 = new Milk("milk 1", "30.05.2019",
-                "15.04.2019", 45.00, 20);
-        Food milk2 = new Milk("milk 2", "30.05.2019",
-                "18.04.2019", 80.00, 30);
+        Food milk1 = new Milk("milk 1", "30.05.2022",
+                "15.01.2019", 45.00, 20);
+        Food milk2 = new Milk("milk 2", "30.05.2022",
+                "18.01.2019", 80.00, 30);
         ControlQuality cq = new ControlQuality(warehouse, shop, thrash);
         cq.sendToStore(bread1);
         cq.sendToStore(bread2);
@@ -46,14 +46,14 @@ public class ControlQualityTest {
 
     @Test
     public void whenThresholdLess75ThenAddToStore() {
-        Food bread1 = new Bread("bread 1", "10.05.2019",
+        Food bread1 = new Bread("bread 1", "30.05.2019",
                 "01.01.2019", 50.00, 10);
         Food bread2 = new Bread("bread 2", "30.05.2019",
                 "01.01.2019", 60.00, 15);
-        Food milk1 = new Milk("milk 1", "10.05.2019",
-                "15.03.2019", 45.00, 20);
-        Food milk2 = new Milk("milk 2", "01.05.2019",
-                "18.03.2019", 80.00, 30);
+        Food milk1 = new Milk("milk 1", "30.05.2019",
+                "01.03.2019", 45.00, 20);
+        Food milk2 = new Milk("milk 2", "30.05.2019",
+                "01.03.2019", 80.00, 30);
         ControlQuality cq = new ControlQuality(warehouse, shop, thrash);
         cq.sendToStore(bread1);
         cq.sendToStore(bread2);

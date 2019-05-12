@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.is;
  */
 public class TrackerSQLTest {
 
-    private TrackerSQL tracker;
+//    private TrackerSQL tracker;
 
 //    @Before
 //    public void initTracker() {
@@ -35,8 +35,7 @@ public class TrackerSQLTest {
 //    }
 
     private Connection init() {
-//        try (InputStream in = TrackerSQL.class.getClassLoader().getResourceAsStream("app.properties")) {
-        try (InputStream in = TrackerSQL.class.getClassLoader().getResourceAsStream("liquibase.properties")) {
+        try (InputStream in = TrackerSQL.class.getClassLoader().getResourceAsStream("app.properties")) {
             Properties config = new Properties();
             config.load(in);
             Class.forName(config.getProperty("driver-class-name"));
