@@ -112,29 +112,11 @@
                 <db.driver>org.postgresql.Driver</db.driver>
             </properties>
         </profile>
-        <!--<profile>-->
-            <!--<id>test</id>-->
-            <!--<properties>-->
-                <!--<db.url>jdbc:postgresql://localhost:5432/requests</db.url>-->
-                <!--<db.username>postgres</db.username>-->
-                <!--<db.password>123123123</db.password>-->
-                <!--<db.driver>org.postgresql.Driver</db.driver>-->
-            <!--</properties>-->
-        <!--</profile>-->
-        <!--<profile>-->
-            <!--<id>production</id>-->
-            <!--<properties>-->
-                <!--<db.url>jdbc:postgresql://localhost:5432/requests</db.url>-->
-                <!--<db.username>postgres</db.username>-->
-                <!--<db.password>123123123</db.password>-->
-                <!--<db.driver>org.postgresql.Driver</db.driver>-->
-            <!--</properties>-->
-        <!--</profile>-->
         <profile>
             <id>travis</id>
-            <!--<activation>-->
-                <!--<activeByDefault>true</activeByDefault>-->
-            <!--</activation>-->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <db.url>jdbc:postgresql://localhost/requests</db.url>
                 <db.username>postgres</db.username>
