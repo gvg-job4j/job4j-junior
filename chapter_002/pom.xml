@@ -43,13 +43,11 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>3.6.2</version>
                 <configuration>
-                    <!--<propertyFile>/src/main/resources/app.properties</propertyFile>-->
-                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                     <changeLogFile>${basedir}/db/master.xml</changeLogFile>
-                    <url>jdbc:postgresql:requests</url>
-                    <username>postgres</username>
-                    <password>123123123</password>
-                    <driver>org.postgresql.Driver</driver>
+                    <url>${db.url}</url>
+                    <driver>${db.driver}</driver>
+                    <username>${db.username}</username>
+                    <password>${db.password}</password>
                 </configuration>
                 <executions>
                     <execution>
@@ -60,6 +58,28 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.liquibase</groupId>-->
+                <!--<artifactId>liquibase-maven-plugin</artifactId>-->
+                <!--<version>3.6.2</version>-->
+                <!--<configuration>-->
+                    <!--&lt;!&ndash;<propertyFile>/src/main/resources/app.properties</propertyFile>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>&ndash;&gt;-->
+                    <!--<changeLogFile>${basedir}/db/master.xml</changeLogFile>-->
+                    <!--<url>jdbc:postgresql:requests</url>-->
+                    <!--<username>postgres</username>-->
+                    <!--<password>123123123</password>-->
+                    <!--<driver>org.postgresql.Driver</driver>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>process-resources</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>update</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 </project>
