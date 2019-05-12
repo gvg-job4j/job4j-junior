@@ -38,7 +38,7 @@ public class TrackerSQLTest {
         try (InputStream in = TrackerSQL.class.getClassLoader().getResourceAsStream("app.properties")) {
             Properties config = new Properties();
             config.load(in);
-            Class.forName(config.getProperty("driver-class-name"));
+            Class.forName(config.getProperty("driver"));
             return DriverManager.getConnection(
                     config.getProperty("url"),
                     config.getProperty("username"),
