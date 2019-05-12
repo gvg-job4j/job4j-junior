@@ -93,9 +93,9 @@
     <profiles>
         <profile>
             <id>test</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <!--<activation>-->
+                <!--<activeByDefault>true</activeByDefault>-->
+            <!--</activation>-->
             <properties>
                 <db.url>jdbc:postgresql://127.0.0.1:5432/requests</db.url>
                 <db.username>postgres</db.username>
@@ -114,9 +114,9 @@
         </profile>
         <profile>
             <id>travis</id>
-            <!--<activation>-->
-                <!--<activeByDefault>true</activeByDefault>-->
-            <!--</activation>-->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <db.url>jdbc:postgresql://localhost/requests</db.url>
                 <db.username>postgres</db.username>

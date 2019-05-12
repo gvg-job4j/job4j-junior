@@ -43,7 +43,7 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>3.6.2</version>
                 <configuration>
-                    <!--<propertyFile>/src/main/resources/app.properties</propertyFile>-->
+                    <propertyFile>/src/main/resources/app.properties</propertyFile>
                     <!--<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>-->
                     <changeLogFile>${basedir}/db/master.xml</changeLogFile>
                     <url>${db.url}</url>
