@@ -54,9 +54,9 @@
                 <executions>
                     <execution>
                         <phase>process-resources</phase>
-                        <!--<goals>-->
-                            <!--<goal>update</goal>-->
-                        <!--</goals>-->
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
