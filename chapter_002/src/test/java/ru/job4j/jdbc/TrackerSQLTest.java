@@ -65,10 +65,10 @@ public class TrackerSQLTest {
 
     @Test
     public void createItem() throws Exception {
-//        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
+        try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
             tracker.add(new Item("name", "testDescription", 123L));
             assertThat(tracker.findByName("name").size(), is(1));
-//        }
+        }
     }
 
     @Test
