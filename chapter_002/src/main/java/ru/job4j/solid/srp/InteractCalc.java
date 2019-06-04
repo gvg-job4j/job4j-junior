@@ -2,6 +2,7 @@ package ru.job4j.solid.srp;
 
 import ru.job4j.calculator.Calculator;
 import ru.job4j.solid.srp.actions.*;
+import ru.job4j.solid.srp.advactions.*;
 
 import java.util.ArrayList;
 
@@ -48,7 +49,8 @@ public class InteractCalc {
         do {
             show();
             int key = this.input.ask("Select: ", ranges);
-            if (key == ranges[ranges.length - 1]) {
+//            if (key == ranges[ranges.length - 1]) {
+            if (key == ranges[0]) {
                 exit = true;
             }
             select(key);
@@ -82,11 +84,17 @@ public class InteractCalc {
      * @return Список доступных операций.
      */
     public int[] fillActions() {
+        actions.add(new Closer());
         actions.add(new Summator());
         actions.add(new Subtractor());
         actions.add(new Multiplator());
         actions.add(new Divider());
-        actions.add(new Closer());
+        actions.add(new Sinysator());
+        actions.add(new Cosinysator());
+        actions.add(new Tangensator());
+        actions.add(new Cotangensator());
+        actions.add(new Logarifmator());
+        actions.add(new Logarifmnator());
         this.actions.trimToSize();
         int[] keys = new int[actions.size()];
         for (int i = 0; i < actions.size(); i++) {
@@ -115,6 +123,5 @@ public class InteractCalc {
      */
     public static void main(String[] args) {
         new InteractCalc(new ValidateCalcInput(new UserInput()), new Calculator()).init();
-
     }
 }

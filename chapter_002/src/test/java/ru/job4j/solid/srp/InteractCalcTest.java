@@ -17,7 +17,7 @@ public class InteractCalcTest {
 
     @Test
     public void whenExitThenZero() {
-        CalcInput input = new StubCalcInput(new String[]{"4"});
+        CalcInput input = new StubCalcInput(new String[]{"0"});
         InteractCalc calc = new InteractCalc(new ValidateCalcInput(input), calculator);
         calc.init();
         assertThat(calc.getResult(), is(0.0));
@@ -25,7 +25,7 @@ public class InteractCalcTest {
 
     @Test
     public void whenAddOneAndOneThenTwo() {
-        CalcInput input = new StubCalcInput(new String[]{"0", "1", "1", "1", "1", "4"});
+        CalcInput input = new StubCalcInput(new String[]{"1", "1", "1", "1", "1", "0"});
         InteractCalc calc = new InteractCalc(new ValidateCalcInput(input), calculator);
         calc.init();
         assertThat(calc.getResult(), is(2.0));
@@ -33,7 +33,7 @@ public class InteractCalcTest {
 
     @Test
     public void whenSubTenAndOneThenNine() {
-        CalcInput input = new StubCalcInput(new String[]{"1", "1", "10", "1", "1", "4"});
+        CalcInput input = new StubCalcInput(new String[]{"2", "1", "10", "1", "1", "0"});
         InteractCalc calc = new InteractCalc(new ValidateCalcInput(input), calculator);
         calc.init();
         assertThat(calc.getResult(), is(9.0));
@@ -41,7 +41,7 @@ public class InteractCalcTest {
 
     @Test
     public void whenMultiplyTenOnZeroThenZero() {
-        CalcInput input = new StubCalcInput(new String[]{"2", "1", "10", "1", "0", "4"});
+        CalcInput input = new StubCalcInput(new String[]{"3", "1", "10", "1", "0", "0"});
         InteractCalc calc = new InteractCalc(new ValidateCalcInput(input), calculator);
         calc.init();
         assertThat(calc.getResult(), is(0.0));
@@ -49,7 +49,7 @@ public class InteractCalcTest {
 
     @Test
     public void whenDivFiveOnTwoThenTwoAndOneHalf() {
-        CalcInput input = new StubCalcInput(new String[]{"3", "1", "5", "1", "2", "4"});
+        CalcInput input = new StubCalcInput(new String[]{"4", "1", "5", "1", "2", "0"});
         InteractCalc calc = new InteractCalc(new ValidateCalcInput(input), calculator);
         calc.init();
         assertThat(calc.getResult(), is(2.5));
@@ -57,7 +57,7 @@ public class InteractCalcTest {
 
     @Test
     public void whenAddOneAndOneAndMultiplyOnTwoThenFour() {
-        CalcInput input = new StubCalcInput(new String[]{"0", "1", "1", "1", "1", "2", "2", "1", "2", "4"});
+        CalcInput input = new StubCalcInput(new String[]{"1", "1", "1", "1", "1", "3", "2", "1", "2", "0"});
         InteractCalc calc = new InteractCalc(new ValidateCalcInput(input), calculator);
         calc.init();
         assertThat(calc.getResult(), is(4.0));
@@ -65,7 +65,7 @@ public class InteractCalcTest {
 
     @Test
     public void whenSubTwoAndZeroAndDivOnTwoThenOne() {
-        CalcInput input = new StubCalcInput(new String[]{"1", "1", "2", "1", "0", "3", "2", "1", "2", "4"});
+        CalcInput input = new StubCalcInput(new String[]{"2", "1", "2", "1", "0", "4", "2", "1", "2", "0"});
         InteractCalc calc = new InteractCalc(new ValidateCalcInput(input), calculator);
         calc.init();
         assertThat(calc.getResult(), is(1.0));
