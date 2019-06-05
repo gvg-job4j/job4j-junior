@@ -44,12 +44,11 @@ public class InteractCalc {
      * Метод показывает меню запуска и обрабатывает выбор пользователя.
      */
     public void init() {
-        int[] ranges = fillActions();
+        int[] ranges = fillActions(3);
         boolean exit = false;
         do {
             show();
             int key = this.input.ask("Select: ", ranges);
-//            if (key == ranges[ranges.length - 1]) {
             if (key == ranges[0]) {
                 exit = true;
             }
@@ -83,19 +82,25 @@ public class InteractCalc {
      *
      * @return Список доступных операций.
      */
-    public int[] fillActions() {
+    public int[] fillActions(int version) {
+        actions.clear();
         actions.add(new Closer());
-        actions.add(new Summator());
-        actions.add(new Subtractor());
-        actions.add(new Multiplator());
-        actions.add(new Divider());
-        actions.add(new Sinysator());
-        actions.add(new Cosinysator());
-        actions.add(new Tangensator());
-        actions.add(new Cotangensator());
-        actions.add(new Logarifmator());
-        actions.add(new Logarifmnator());
-        this.actions.trimToSize();
+        switch (version) {
+            case 3:
+                addStandartOperations();
+                addEngOperations();
+                break;
+            case 1:
+                addStandartOperations();
+                break;
+            case 2:
+                addEngOperations();
+                break;
+            default:
+                break;
+        }
+        actions.add(new Chooser(this));
+        actions.trimToSize();
         int[] keys = new int[actions.size()];
         for (int i = 0; i < actions.size(); i++) {
             if (actions.get(i) != null) {
@@ -105,6 +110,28 @@ public class InteractCalc {
             }
         }
         return keys;
+    }
+
+    /**
+     * Метод добавляет использование стандартных операций.
+     */
+    private void addStandartOperations() {
+        actions.add(new Summator());
+        actions.add(new Subtractor());
+        actions.add(new Multiplator());
+        actions.add(new Divider());
+    }
+
+    /**
+     * Метод добавляет использование инженерных операций.
+     */
+    private void addEngOperations() {
+        actions.add(new Sinysator());
+        actions.add(new Cosinysator());
+        actions.add(new Tangensator());
+        actions.add(new Cotangensator());
+        actions.add(new Logarifmator());
+        actions.add(new Logarifmnator());
     }
 
     /**
