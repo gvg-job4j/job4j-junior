@@ -1,12 +1,10 @@
-package ru.job4j.solid.lsp;
-
-import java.util.Date;
+package ru.job4j.solid.lsp.eventloop;
 
 /**
  * @author Valeriy Gyrievskikh
  * @since 15.04.2019
  */
-public class Bread extends Food {
+public class Milk extends Food {
     /**
      * Коструктор, устанавливает параметры объекта.
      *
@@ -16,7 +14,7 @@ public class Bread extends Food {
      * @param price       Цена.
      * @param discount    Скидка.
      */
-    public Bread(String name, String expiredDate, String createDate, double price, int discount) {
+    public Milk(String name, String expiredDate, String createDate, double price, int discount) {
         super(name, expiredDate, createDate, price, discount);
     }
 }

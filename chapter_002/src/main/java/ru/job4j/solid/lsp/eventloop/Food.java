@@ -1,8 +1,6 @@
-package ru.job4j.solid.lsp;
+package ru.job4j.solid.lsp.eventloop;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * @author Valeriy Gyrievskikh
@@ -16,11 +14,11 @@ public class Food {
     /**
      * Дата истечения срока годности.
      */
-    private Date expiredDate;
+    private LocalDate expiredDate;
     /**
      * Дата выпуска.
      */
-    private Date createDate;
+    private LocalDate createDate;
     /**
      * Цена.
      */
@@ -40,16 +38,11 @@ public class Food {
      * @param discount    Скидка.
      */
     public Food(String name, String expiredDate, String createDate, double price, int discount) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        try {
-            this.expiredDate = dateFormat.parse(expiredDate);
-            this.createDate = dateFormat.parse(createDate);
-            this.name = name;
-            this.price = price;
-            this.discount = discount;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        this.expiredDate = LocalDate.parse(expiredDate);
+        this.createDate = LocalDate.parse(createDate);
+        this.name = name;
+        this.price = price;
+        this.discount = discount;
     }
 
     /**
@@ -57,7 +50,7 @@ public class Food {
      *
      * @return Дата истечения срока годности.
      */
-    public Date getExpiredDate() {
+    public LocalDate getExpiredDate() {
         return expiredDate;
     }
 
@@ -66,7 +59,7 @@ public class Food {
      *
      * @return Дата выпуска.
      */
-    public Date getCreateDate() {
+    public LocalDate getCreateDate() {
         return createDate;
     }
 
