@@ -15,31 +15,6 @@ public class BaseFoodHandler implements FoodHandler {
     private List<FoodHandler> stores = new ArrayList<>();
 
     /**
-     * Текущее хранилище.
-     */
-    private FoodHandler next;
-
-    /**
-     * Метод добавляет хранилище в список.
-     *
-     * @param next Добавляемое хранилище.
-     */
-    @Override
-    public void setNext(FoodHandler next) {
-        this.next = next;
-        stores.add(next);
-    }
-
-    /**
-     * Метод возвращает текущее хранилище.
-     *
-     * @return Текущее хранилище.
-     */
-    public FoodHandler getNext() {
-        return next;
-    }
-
-    /**
      * Метод возвращает текущий список хранилищ.
      *
      * @return Список хранилищ.
@@ -59,8 +34,11 @@ public class BaseFoodHandler implements FoodHandler {
     @Override
     public boolean transfer(Food food) {
         boolean stored = false;
-        if (next.transfer(food)) {
-            stored = true;
+        for (FoodHandler handler : stores) {
+            if (handler.transfer(food)) {
+                stored = true;
+                break;
+            }
         }
         return stored;
     }

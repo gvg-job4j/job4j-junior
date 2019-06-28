@@ -7,10 +7,6 @@ import java.util.List;
  * @since 05.06.2019
  */
 public interface FoodHandler {
-    /**
-     * Метод добавляет хранилище в список.
-     */
-    void setNext(FoodHandler handler);
 
     /**
      * Метод выполняет распределение продуктов по хранилищам.
@@ -26,11 +22,4 @@ public interface FoodHandler {
      * @return Список хранилищ.
      */
     List<FoodHandler> getStores();
-
-    /**
-     * Метод возвращает текущее хранилище.
-     *
-     * @return Текущее хранилище.
-     */
-    FoodHandler getNext();
 }

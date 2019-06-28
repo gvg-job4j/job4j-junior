@@ -12,18 +12,17 @@ public class ControlQuality {
      * Текущий распределитель продуктов по хранилищам.
      */
     private final FoodHandler handler = new BaseFoodHandler();
+
     /**
-     * Используемый склад.
+     * Метод заполняет список хранилищ распределителя.
      */
-    private Warehouse warehouse = new Warehouse();
-    /**
-     * Используемый магазин.
-     */
-    private Shop shop = new Shop();
-    /**
-     * Используемая мусорка.
-     */
-    private Thrash thrash = new Thrash();
+    public void initHandler() {
+        List<FoodHandler> stores = handler.getStores();
+        stores.clear();
+        stores.add(new Warehouse());
+        stores.add(new Shop());
+        stores.add(new Thrash());
+    }
 
     /**
      * Метод выполняет распределение продуктов по местам хранения в зависимости от
@@ -32,14 +31,7 @@ public class ControlQuality {
      * @param food Распределяемый продукт.
      */
     public void sendToStore(Food food) {
-        handler.setNext(warehouse);
-        if (!handler.transfer(food)) {
-            handler.setNext(shop);
-            if (!handler.transfer(food)) {
-                handler.setNext(thrash);
-                handler.transfer(food);
-            }
-        }
+        handler.transfer(food);
     }
 
     /**

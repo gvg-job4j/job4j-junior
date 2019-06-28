@@ -1,5 +1,6 @@
 package ru.job4j.solid.lsp;
 
+import org.junit.Before;
 import org.junit.Test;
 import ru.job4j.solid.lsp.eventloop.*;
 
@@ -18,6 +19,12 @@ public class ControlQualityEventLoopTest {
     private Thrash thrash = new Thrash();
     private Shop shop = new Shop();
     private LocalDate date = LocalDate.now();
+    private ControlQuality cq = new ControlQuality();
+
+    @Before
+    public void init() {
+        cq.initHandler();
+    }
 
     @Test
     public void whenThresholdLess75ThenAddToStore() {
@@ -29,7 +36,6 @@ public class ControlQualityEventLoopTest {
                 date.minusDays(5).toString(), 45.00, 20);
         Food milk2 = new Milk("milk 2", date.plusDays(1).toString(),
                 date.minusDays(5).toString(), 80.00, 30);
-        ControlQuality cq = new ControlQuality();
         cq.sendToStore(bread1);
         cq.sendToStore(bread2);
         cq.sendToStore(milk1);
@@ -53,7 +59,6 @@ public class ControlQualityEventLoopTest {
                 date.minusDays(1).toString(), 45.00, 20);
         Food milk2 = new Milk("milk 2", date.plusDays(8).toString(),
                 date.minusDays(1).toString(), 80.00, 30);
-        ControlQuality cq = new ControlQuality();
         cq.sendToStore(bread1);
         cq.sendToStore(bread2);
         cq.sendToStore(milk1);
@@ -77,7 +82,6 @@ public class ControlQualityEventLoopTest {
                 date.minusDays(2).toString(), 45.00, 20);
         Food milk2 = new Milk("milk 2", date.minusDays(1).toString(),
                 date.minusDays(2).toString(), 80.00, 30);
-        ControlQuality cq = new ControlQuality();
         cq.sendToStore(bread1);
         cq.sendToStore(bread2);
         cq.sendToStore(milk1);
