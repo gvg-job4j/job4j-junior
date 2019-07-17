@@ -13,16 +13,16 @@ public class ControlQuality {
      */
     private final FoodHandler handler = new BaseFoodHandler();
 
-    /**
-     * Метод заполняет список хранилищ распределителя.
-     */
-    public void initHandler() {
-        List<FoodHandler> stores = handler.getStores();
-        stores.clear();
-        stores.add(new Warehouse());
-        stores.add(new Shop());
-        stores.add(new Thrash());
-    }
+//    /**
+//     * Метод заполняет список хранилищ распределителя.
+//     */
+//    public void initHandler() {
+//        List<FoodHandler> stores = handler.getStores();
+//        stores.clear();
+//        stores.add(new Warehouse());
+//        stores.add(new Shop());
+//        stores.add(new Thrash());
+//    }
 
     /**
      * Метод выполняет распределение продуктов по местам хранения в зависимости от
