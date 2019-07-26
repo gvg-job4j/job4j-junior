@@ -21,6 +21,7 @@ import static org.hamcrest.core.Is.is;
 public class StoreSQLTest {
 
     StoreSQL store;
+    String projectPath = System.getProperty("user.dir");
 
     @Before
     public void createStore() {
@@ -52,7 +53,8 @@ public class StoreSQLTest {
     public void whenSaveToFileThenFileExists() {
         store.generate(10);
         List<Entry> list = store.load();
-        File source = new File("G:\\projects\\job4j-junior\\chapter_002\\StoreXML.xml");
+
+        File source = new File(projectPath + "/StoreXML.xml");
         StoreXML storeXML = new StoreXML(source);
         storeXML.save(list);
         assertTrue(source.exists());
@@ -63,12 +65,12 @@ public class StoreSQLTest {
 //        store.generate(1_000_000); //Выполняется 12 сек. С использованием Batch - 8 сек.
         store.generate(10);
         List<Entry> list = store.load();
-        File source = new File("G:\\projects\\job4j-junior\\chapter_002\\StoreXML.xml");
+        File source = new File(projectPath + "/StoreXML.xml");
         StoreXML storeXML = new StoreXML(source);
         storeXML.save(list);
         PrintWriter out = null;
         try {
-            File schema = new File("G:\\projects\\job4j-junior\\chapter_002\\schema.xml");
+            File schema = new File(projectPath + "/schema.xml");
             out = new PrintWriter(schema);
             out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
                     + "<xsl:stylesheet xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" version=\"1.0\">\n"
@@ -85,7 +87,7 @@ public class StoreSQLTest {
                     + "</xsl:template>\n"
                     + "</xsl:stylesheet>\n");
             out.close();
-            File dest = new File("G:\\projects\\job4j-junior\\chapter_002\\destXML.xml");
+            File dest = new File(projectPath + "/destXML.xml");
             new ConvertXSQT().convert(source, dest, schema);
             ParserSAX parser = new ParserSAX();
             parser.parseFile(dest);
