@@ -1,6 +1,6 @@
 package ru.job4j.solid.lsp.eventloop;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Valeriy Gyrievskikh
@@ -41,5 +41,29 @@ public class ControlQuality {
      */
     public List<FoodHandler> getStores() {
         return handler.getStores();
+    }
+
+    /**
+     * Метод выполняет перераспределение продуктов.
+     */
+    public void resort() {
+        List<Food> foodList = new ArrayList<>();
+        List<FoodHandler> stores = handler.getStores();
+        for (FoodHandler store : stores) {
+            if (store instanceof Shop) {
+                foodList.addAll(((Shop) store).getProducts());
+
+            }
+            if (store instanceof Thrash) {
+                foodList.addAll(((Thrash) store).getProducts());
+            }
+            if (store instanceof Warehouse) {
+                foodList.addAll(((Warehouse) store).getProducts());
+            }
+        }
+        initHandler();
+        for (Food food : foodList) {
+            sendToStore(food);
+        }
     }
 }
