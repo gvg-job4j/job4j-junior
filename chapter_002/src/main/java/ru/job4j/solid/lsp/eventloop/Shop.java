@@ -9,7 +9,7 @@ import java.util.List;
  * @author Valeriy Gyrievskikh
  * @since 15.04.2019
  */
-public class Shop extends BaseFoodHandler {
+public class Shop extends BaseFoodHandler implements Redistributable {
 
     /**
      * Список продуктов в текущем хранилище.

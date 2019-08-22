@@ -9,7 +9,7 @@ import java.util.List;
  * @author Valeriy Gyrievskikh
  * @since 06.06.2019
  */
-public class Thrash extends BaseFoodHandler {
+public class Thrash extends BaseFoodHandler implements Redistributable {
 
     /**
      * Список продуктов в текущем хранилище.

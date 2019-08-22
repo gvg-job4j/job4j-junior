@@ -9,7 +9,7 @@ import java.util.List;
  * @author Valeriy Gyrievskikh
  * @since 15.04.2019
  */
-public class Warehouse extends BaseFoodHandler {
+public class Warehouse extends BaseFoodHandler implements Redistributable {
 
     /**
      * Список продуктов в текущем хранилище.
